@@ -1,0 +1,24 @@
+# == Schema Information
+#
+# Table name: categories
+#
+#  id         :bigint(8)        not null, primary key
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  parent_id  :bigint(8)
+#
+# Indexes
+#
+#  index_categories_on_name  (name)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  parent_id: 
+
+two:
+  name: MyString
+  parent_id: 

@@ -1,0 +1,27 @@
+# == Schema Information
+#
+# Table name: questions
+#
+#  id                :bigint(8)        not null, primary key
+#  questionable_type :string
+#  title             :string
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  questionable_id   :bigint(8)
+#
+# Indexes
+#
+#  index_questions_on_questionable_type_and_questionable_id  (questionable_type,questionable_id)
+#
+
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  questionable: one
+  questionable_type: Questionable
+
+two:
+  title: MyString
+  questionable: two
+  questionable_type: Questionable
