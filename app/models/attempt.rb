@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: attempts
@@ -10,17 +9,17 @@
 #  started_at     :datetime
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
-#  exam_id        :bigint(8)
+#  interview_id   :bigint(8)
 #  interviewee_id :bigint(8)
 #
 # Indexes
 #
-#  index_attempts_on_exam_id         (exam_id)
+#  index_attempts_on_interview_id    (interview_id)
 #  index_attempts_on_interviewee_id  (interviewee_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (exam_id => exams.id)
+#  fk_rails_...  (interview_id => interviews.id)
 #  fk_rails_...  (interviewee_id => interviewees.id)
 #
 
@@ -30,5 +29,5 @@ class Attempt < ApplicationRecord
   has_and_belongs_to_many :questions
   has_and_belongs_to_many :categories
   belongs_to :interviewee
-  belongs_to :exam
+  belongs_to :interview
 end

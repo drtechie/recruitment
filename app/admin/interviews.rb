@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register Exam do
+ActiveAdmin.register Interview do
   permit_params :name, :config, category_ids: []
   json_editor
 
@@ -9,8 +9,8 @@ ActiveAdmin.register Exam do
     id_column
     column :name
     column :config
-    column :categories do |exam|
-      exam.categories.map(&:name).join(", ")
+    column :categories do |interview|
+      interview.categories.map(&:name).join(", ")
     end
     actions
   end
@@ -20,8 +20,8 @@ ActiveAdmin.register Exam do
       row :id
       row :name
       row :config
-      row :categories do |exam|
-        exam.categories.map(&:name).join(", ")
+      row :categories do |interview|
+        interview.categories.map(&:name).join(", ")
       end
       row :created_at
       row :updated_at

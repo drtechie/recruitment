@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
-# Table name: exams
+# Table name: interviews
 #
 #  id         :bigint(8)        not null, primary key
 #  config     :jsonb
@@ -9,12 +11,8 @@
 #  updated_at :datetime         not null
 #
 
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  name: MyString
-  config: 
-
-two:
-  name: MyString
-  config: 
+class Interview < ApplicationRecord
+  has_and_belongs_to_many :categories
+  has_many :interviews_categories
+  has_many :attempts
+end

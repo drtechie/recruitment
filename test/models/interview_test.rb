@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: exams
+# Table name: interviews
 #
 #  id         :bigint(8)        not null, primary key
 #  config     :jsonb

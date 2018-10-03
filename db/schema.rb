@@ -33,11 +33,11 @@ ActiveRecord::Schema.define(version: 2018_10_03_144755) do
     t.datetime "started_at"
     t.datetime "ended_at"
     t.bigint "interviewee_id"
-    t.bigint "exam_id"
+    t.bigint "interview_id"
     t.jsonb "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["exam_id"], name: "index_attempts_on_exam_id"
+    t.index ["interview_id"], name: "index_attempts_on_interview_id"
     t.index ["interviewee_id"], name: "index_attempts_on_interviewee_id"
   end
 
@@ -83,28 +83,28 @@ ActiveRecord::Schema.define(version: 2018_10_03_144755) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "exams", force: :cascade do |t|
-    t.string "name"
-    t.jsonb "config"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "exams_categories", force: :cascade do |t|
-    t.bigint "exam_id"
-    t.bigint "category_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_exams_categories_on_category_id"
-    t.index ["exam_id"], name: "index_exams_categories_on_exam_id"
-  end
-
   create_table "interviewees", force: :cascade do |t|
     t.string "auth_code"
     t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_interviewees_on_user_id"
+  end
+
+  create_table "interviews", force: :cascade do |t|
+    t.string "name"
+    t.jsonb "config"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "interviews_categories", force: :cascade do |t|
+    t.bigint "interview_id"
+    t.bigint "category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_interviews_categories_on_category_id"
+    t.index ["interview_id"], name: "index_interviews_categories_on_interview_id"
   end
 
   create_table "mcqs", force: :cascade do |t|
@@ -153,15 +153,15 @@ ActiveRecord::Schema.define(version: 2018_10_03_144755) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
-  add_foreign_key "attempts", "exams"
   add_foreign_key "attempts", "interviewees"
+  add_foreign_key "attempts", "interviews"
   add_foreign_key "attempts_categories", "attempts"
   add_foreign_key "attempts_categories", "categories"
   add_foreign_key "attempts_questions", "attempts"
   add_foreign_key "attempts_questions", "questions"
   add_foreign_key "categories_questions", "categories"
   add_foreign_key "categories_questions", "questions"
-  add_foreign_key "exams_categories", "categories"
-  add_foreign_key "exams_categories", "exams"
   add_foreign_key "interviewees", "users"
+  add_foreign_key "interviews_categories", "categories"
+  add_foreign_key "interviews_categories", "interviews"
 end

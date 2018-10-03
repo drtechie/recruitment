@@ -20,9 +20,9 @@ class Category < ApplicationRecord
   acts_as_tree order: "name"
   validates_presence_of :name
   has_many :categories_questions
-  has_many :exams_categories
+  has_many :interviews_categories
   has_many :attempts_categories, class_name: "AttemptsCategories"
   has_and_belongs_to_many :questions
-  has_and_belongs_to_many :exams
+  has_and_belongs_to_many :interviews
   has_and_belongs_to_many :attempts
 end

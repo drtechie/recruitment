@@ -9,7 +9,7 @@ class GraphqlController < ApplicationController
       # Query context goes here, for example:
       current_user: current_user
     }
-    result = InterviewSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
+    result = RecruitmentSchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render json: result
   rescue StandardError => err
     raise err unless Rails.env.development?

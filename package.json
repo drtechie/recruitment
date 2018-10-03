@@ -1,5 +1,5 @@
 {
-  "name": "interview",
+  "name": "recruitment",
   "private": true,
   "dependencies": {
     "@rails/webpacker": "3.5",
