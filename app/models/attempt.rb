@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: attempts
@@ -30,4 +31,20 @@ class Attempt < ApplicationRecord
   has_and_belongs_to_many :categories
   belongs_to :interviewee
   belongs_to :interview
+
+  include Statesman::Adapters::ActiveRecordQueries
+  has_many :attempt_transitions, autosave: false
+
+  def state_machine
+    @state_machine ||= AttemptStateMachine.new(self, transition_class: AttemptTransition)
+  end
+
+  def self.transition_class
+    AttemptTransition
+  end
+
+  def self.initial_state
+    :not_started
+  end
+  private_class_method :initial_state
 end
