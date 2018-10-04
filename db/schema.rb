@@ -120,7 +120,8 @@ ActiveRecord::Schema.define(version: 2018_10_03_172759) do
   end
 
   create_table "mcqs", force: :cascade do |t|
-    t.jsonb "options"
+    t.text "options", default: [], array: true
+    t.integer "correct_options", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

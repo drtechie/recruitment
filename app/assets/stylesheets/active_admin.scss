@@ -12,8 +12,56 @@
 @import "active_admin/mixins";
 @import "active_admin/base";
 @import "active_admin/json_editor.css";
+@import "codemirror";
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.array-action--add, .array-action--remove {
+  background: none;
+  border-radius: 0;
+  border: 0;
+  box-shadow: none;
+  line-height: 1;
+  padding: 0;
+  text-shadow: none;
+  vertical-align: middle;
+}
+
+.array-action--add:not(.disabled) {
+  &:hover, &:active, &:focus {
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+.array-action--remove:not(.disabled) {
+  &:hover, &:active, &:focus {
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+.textarea-group--array {
+  margin-bottom: 15px;
+  float: right;
+}
+
+.input-group--array__item {
+  position: relative;
+  margin-bottom: 20px;
+  &.codemirror-item {
+    min-height: 300px;
+  }
+  .CodeMirror {
+    width: 80%;
+    float: right;
+    &.readonly {
+      background: grey;
+    }
+  }
+}

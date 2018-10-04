@@ -3,12 +3,17 @@
 ActiveAdmin.register Mcq do
   menu parent: "Questions"
   json_editor
-  permit_params :options, question_attributes: [:title, category_ids: []]
+  permit_params options: [], question_attributes: [:title, category_ids: []], correct_options: []
+  before_save do |mcq|
+    mcq.options = mcq.options.reject { |m| m.empty? }
+    mcq.correct_options = mcq.correct_options.reject { |m| !m.is_a? Numeric }
+  end
 
   index do
     selectable_column
     id_column
     column :options
+    column :correct_options
     column :categories do |essay|
       essay.categories.map(&:name).join(", ")
     end
@@ -19,6 +24,7 @@ ActiveAdmin.register Mcq do
     attributes_table do
       row :id
       row :options
+      row :correct_options
       row :categories do |essay|
         essay.categories.map(&:name).join(", ")
       end
@@ -37,7 +43,8 @@ ActiveAdmin.register Mcq do
       ff.input :categories
     end
     f.inputs do
-      f.input :options, as: :jsonb
+      f.input :options, as: :array, class: "codemirror-array", item_class: "codemirror-item"
+      f.input :correct_options, as: :array
     end
     f.actions
   end
