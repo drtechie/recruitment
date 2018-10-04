@@ -5,8 +5,8 @@ ActiveAdmin.register Mcq do
   json_editor
   permit_params options: [], question_attributes: [:title, category_ids: []], correct_options: []
   before_save do |mcq|
-    mcq.options = mcq.options.reject { |m| m.empty? }
-    mcq.correct_options = mcq.correct_options.reject { |m| !m.is_a? Numeric }
+    mcq.options = mcq.options.reject(&:empty?)
+    mcq.correct_options = mcq.correct_options.select { |m| m.is_a? Numeric }
   end
 
   index do
