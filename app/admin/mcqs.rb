@@ -12,8 +12,7 @@ ActiveAdmin.register Mcq do
   index do
     selectable_column
     id_column
-    column :options
-    column :correct_options
+    column :question
     column :categories do |essay|
       essay.categories.map(&:name).join(", ")
     end
@@ -23,8 +22,7 @@ ActiveAdmin.register Mcq do
   show do
     attributes_table do
       row :id
-      row :options
-      row :correct_options
+      row :question
       row :categories do |essay|
         essay.categories.map(&:name).join(", ")
       end

@@ -7,9 +7,7 @@ ActiveAdmin.register Essay do
   index do
     selectable_column
     id_column
-    column :title do |essay|
-      essay.question ? essay.question.title : ""
-    end
+    column :question
     column :categories do |essay|
       essay.categories.map(&:name).join(", ")
     end
@@ -21,9 +19,7 @@ ActiveAdmin.register Essay do
   show do
     attributes_table do
       row :id
-      row :title do |essay|
-        essay.question ? essay.question.title : ""
-      end
+      row :question
       row :categories do |essay|
         essay.categories.map(&:name).join(", ")
       end
