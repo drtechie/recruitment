@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_03_172759) do
+ActiveRecord::Schema.define(version: 2018_10_07_093903) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -69,6 +69,17 @@ ActiveRecord::Schema.define(version: 2018_10_03_172759) do
     t.datetime "updated_at", null: false
     t.index ["attempt_id"], name: "index_attempts_questions_on_attempt_id"
     t.index ["question_id"], name: "index_attempts_questions_on_question_id"
+  end
+
+  create_table "auth_tokens", force: :cascade do |t|
+    t.string "client_id"
+    t.bigint "user_id"
+    t.string "token"
+    t.datetime "expires"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "token", "expires"], name: "index_auth_tokens_on_user_id_and_token_and_expires"
+    t.index ["user_id"], name: "index_auth_tokens_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -173,6 +184,7 @@ ActiveRecord::Schema.define(version: 2018_10_03_172759) do
   add_foreign_key "attempts_categories", "categories"
   add_foreign_key "attempts_questions", "attempts"
   add_foreign_key "attempts_questions", "questions"
+  add_foreign_key "auth_tokens", "users"
   add_foreign_key "categories_questions", "categories"
   add_foreign_key "categories_questions", "questions"
   add_foreign_key "interviewees", "users"

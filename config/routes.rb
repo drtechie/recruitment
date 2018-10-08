@@ -7,6 +7,13 @@ Rails.application.routes.draw do
   post "/graphql", to: "graphql#execute"
   devise_for :users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  namespace :api, defaults: { format: "json" } do
+    namespace :v1 do
+      post "auth/login", to: "auth#login"
+      delete "auth/logout", to: "auth#logout"
+      get "auth/whoami", to: "auth#whoami"
+    end
+  end
   root to: "home#index"
+  get "*path", to: "home#index", format: "html"
 end

@@ -45,7 +45,15 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :trackable, :confirmable, :lockable
 
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "only valid emails allowed " }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "Only valid emails allowed." }
+
+  def self.create_token(client_id, user_id, ttl)
+    expiry = Time.now.advance seconds: ttl
+    raw_token = Devise.friendly_token(30)
+    encrypted_token = Digest::SHA1.hexdigest raw_token
+    tok = AuthToken.create! client_id: client_id, expires: expiry, user_id: user_id, token: encrypted_token
+    { token: raw_token, expires: tok.expires.to_i }
+  end
 
   def full_name
     @full_name ||= "#{get_string title}#{get_string first_name}#{get_string middle_name}#{get_string last_name}".chop
