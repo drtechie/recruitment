@@ -47,7 +47,7 @@ class User < ApplicationRecord
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP, message: "Only valid emails allowed." }
 
-  def self.create_token(client_id, user_id, ttl)
+  def self.create_token(client_id, user_id, ttl = DEFAULT_TOKEN_TTL)
     expiry = Time.now.advance seconds: ttl
     raw_token = Devise.friendly_token(30)
     encrypted_token = Digest::SHA1.hexdigest raw_token

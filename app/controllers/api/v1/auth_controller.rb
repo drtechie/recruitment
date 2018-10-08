@@ -5,8 +5,6 @@ module Api
     class AuthController < ApiController
       skip_before_action :authenticate_user_from_token!, only: :login
 
-      DEFAULT_TOKEN_TTL = 60.minutes.to_i
-
       def login
         if !params[:email] || !params[:auth_code]
           return _unprocessable_data
