@@ -9,8 +9,18 @@ export function withMaster(ChildComponent) {
     return (
       <MasterAppConsumer>
         {
-          ({ updateNextPathName }) => {
-            return <ChildComponent { ...props } updateNextPathName={ updateNextPathName } />;
+          ({
+            updateNextPathName, updateLoginCredentials, handleLogin, ...rest
+          }) => {
+            return (
+              <ChildComponent
+                { ...props }
+                { ...rest }
+                handleLogin={ handleLogin }
+                updateLoginCredentials={ updateLoginCredentials }
+                updateNextPathName={ updateNextPathName }
+              />
+            );
           }
         }
       </MasterAppConsumer>

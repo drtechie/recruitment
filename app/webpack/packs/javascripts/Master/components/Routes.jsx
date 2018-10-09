@@ -3,6 +3,7 @@ import { Switch } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
+import { hot } from 'react-hot-loader';
 import Shell from './Shell';
 import PageLoading from '../../Common/PageLoading';
 import RenderRoute from './RenderRoute';
@@ -65,4 +66,4 @@ Routes.propTypes = {
   location: PropTypes.object,
 };
 
-export default withRouter(Routes);
+export default hot(module)(withRouter(Routes));

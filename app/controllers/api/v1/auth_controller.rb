@@ -6,7 +6,7 @@ module Api
       skip_before_action :authenticate_user_from_token!, only: :login
 
       def login
-        if !params[:email] || !params[:auth_code]
+        if params[:email].empty? || params[:auth_code].empty?
           return _unprocessable_data
         end
 
@@ -23,7 +23,8 @@ module Api
 
         sign_out current_user
         sign_in(:user, user)
-        render json: User.create_token(client_id, user.id, ttl).merge(user_json)
+        render json: { authToken: User.create_token(client_id, user.id, ttl),
+                       name: current_user.full_name }
       end
 
       def logout

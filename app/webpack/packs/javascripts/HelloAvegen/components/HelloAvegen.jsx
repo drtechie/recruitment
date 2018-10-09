@@ -2,29 +2,40 @@ import React from 'react';
 import { Input, AutoComplete, Button } from 'antd';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import QueueAnim from 'rc-queue-anim';
+import PropTypes from 'prop-types';
 import avegenLogo from '../../../images/avegen-logo.png';
+import { withMaster } from '../../Master/withMaster';
 
-export default class HelloAvegen extends React.Component {
+class HelloAvegen extends React.Component {
   state = {
     dataSource: [],
-    loading: false,
+    email: '',
+    authCode: '',
   };
 
-  handleChange = (value) => {
-    this.setState({
-      dataSource: !value || value.indexOf('@') >= 0 ? [] : [
-        `${ value }@gmail.com`,
-        `${ value }@yahoo.com`,
-      ],
-    });
+  handleEmailChange = (value) => {
+    if (!value || value.indexOf('@') >= 0) {
+      this.setState({
+        dataSource: [],
+      });
+    } else {
+      this.setState({
+        dataSource: [
+          `${ value }@gmail.com`,
+          `${ value }@yahoo.com`,
+        ],
+      });
+    }
+    this.setState({ email: value });
   };
 
-  enterLoading = () => {
-    this.setState({ loading: true });
-  }
+  handleAuthCodeChange = (event) => {
+    this.setState({ authCode: event.target.value });
+  };
 
   render() {
-    const { dataSource, loading } = this.state;
+    const { loggingIn, handleLogin } = this.props;
+    const { dataSource, email, authCode } = this.state;
     return (
       <Grid
         fluid
@@ -61,8 +72,9 @@ export default class HelloAvegen extends React.Component {
                 >
                   <AutoComplete
                     dataSource={ dataSource }
+                    value={ email }
                     style={ { width: '100%' } }
-                    onChange={ this.handleChange }
+                    onChange={ this.handleEmailChange }
                     placeholder='Email'
                   />
                 </Col>
@@ -73,6 +85,8 @@ export default class HelloAvegen extends React.Component {
                   className='margin-top-5'
                 >
                   <Input
+                    value={ authCode }
+                    onChange={ this.handleAuthCodeChange }
                     placeholder='Authentication Code'
                     style={ { width: '100%' } }
                   />
@@ -85,8 +99,8 @@ export default class HelloAvegen extends React.Component {
                 >
                   <Button
                     type='primary'
-                    loading={ loading }
-                    onClick={ this.enterLoading }
+                    loading={ loggingIn }
+                    onClick={ () => handleLogin(email, authCode) }
                   >
                     Submit
                   </Button>
@@ -99,3 +113,10 @@ export default class HelloAvegen extends React.Component {
     );
   }
 }
+
+HelloAvegen.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  loggingIn: PropTypes.bool.isRequired,
+};
+
+export default withMaster(HelloAvegen);

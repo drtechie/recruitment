@@ -6,11 +6,11 @@ import Routes from './components/Routes';
 
 const MasterApp = (props) => {
   return (
-    <MasterAppProvider { ...props }>
-      <BrowserRouter>
+    <BrowserRouter>
+      <MasterAppProvider { ...props }>
         <Routes />
-      </BrowserRouter>
-    </MasterAppProvider>
+      </MasterAppProvider>
+    </BrowserRouter>
   );
 };
 

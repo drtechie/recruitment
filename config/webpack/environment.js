@@ -4,6 +4,7 @@ const devMode = process.env.NODE_ENV !== 'production'
 const lessToJs = require('less-vars-to-js');
 const path = require('path');
 const fs  = require('fs');
+const webpack = require('webpack');
 
 const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, './theme-vars.less'), 'utf8'));
 
