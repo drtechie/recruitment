@@ -1,16 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Layout } from 'antd';
+import { Button, Layout, Icon } from 'antd';
+import { Grid, Row, Col } from 'react-flexbox-grid';
+import { withMaster } from '../withMaster';
 
 const { Content, Footer } = Layout;
 
 class Shell extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
+    authToken: PropTypes.object,
+    handleLogout: PropTypes.func.isRequired,
+    loggingOut: PropTypes.bool.isRequired,
   }
 
   render() {
-    const { children } = this.props;
+    const {
+      children, authToken, handleLogout, loggingOut,
+    } = this.props;
     return (
       <Layout className='layout' style={ { minHeight: '100vh' } }>
         <Content
@@ -22,6 +29,28 @@ class Shell extends React.Component {
             minHeight: 'calc("100vh - 69px")',
           } }
         >
+          {
+            authToken && (
+            <Grid fluid>
+              <Row end='xs'>
+                <Col
+                  xs={ 12 }
+                  className='margin-top-15'
+                >
+                  <Button
+                    type='primary'
+                    loading={ loggingOut }
+                    onClick={ () => handleLogout() }
+                  >
+                    Logout
+                    {' '}
+                    <Icon type='logout' theme='outlined' />
+                  </Button>
+                </Col>
+              </Row>
+            </Grid>
+            )
+          }
           { children }
         </Content>
         <Footer style={ { textAlign: 'center' } } theme='dark'>
@@ -36,4 +65,4 @@ Avegen India Pvt Ltd
   }
 }
 
-export default Shell;
+export default withMaster(Shell);

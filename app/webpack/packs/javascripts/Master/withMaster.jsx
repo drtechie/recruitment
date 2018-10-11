@@ -10,15 +10,12 @@ export function withMaster(ChildComponent) {
       <MasterAppConsumer>
         {
           ({
-            updateNextPathName, updateLoginCredentials, handleLogin, ...rest
+            ...rest
           }) => {
             return (
               <ChildComponent
                 { ...props }
                 { ...rest }
-                handleLogin={ handleLogin }
-                updateLoginCredentials={ updateLoginCredentials }
-                updateNextPathName={ updateNextPathName }
               />
             );
           }

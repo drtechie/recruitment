@@ -1,5 +1,7 @@
 import React from 'react';
-import { Input, AutoComplete, Button } from 'antd';
+import {
+  Icon, Input, AutoComplete, Button,
+} from 'antd';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import QueueAnim from 'rc-queue-anim';
 import PropTypes from 'prop-types';
@@ -103,6 +105,8 @@ class HelloAvegen extends React.Component {
                     onClick={ () => handleLogin(email, authCode) }
                   >
                     Submit
+                    {' '}
+                    <Icon type='login' theme='outlined' />
                   </Button>
                 </Col>
               </Row>

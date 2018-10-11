@@ -10,30 +10,20 @@ class MasterAppProvider extends Component {
   state = {
     nextPath: null,
     authToken: null,
+    name: null,
     loggingIn: false,
+    loggingOut: false,
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  componentDidMount() {
     const {
       authToken, name,
-    } = nextProps;
-
-    if (prevState.authToken !== nextProps.authToken) {
-      return {
-        authToken,
-        name,
-      };
-    }
-    // Return null to indicate no change to state.
-    return null;
+    } = this.props;
+    this.setState({ authToken, name });
   }
 
   updateNextPathName = (path) => {
     this.setState({ nextPath: path });
-  }
-
-  updateLoginCredentials = (credentails) => {
-    this.setState({ authToken: credentails.authToken, name: credentails.name });
   }
 
   handleLogin = (email, authCode) => {
@@ -46,7 +36,8 @@ class MasterAppProvider extends Component {
     })
       .then((response) => {
         message.success('Logged in!');
-        this.updateLoginCredentials(response);
+        const { authToken, name } = response.data;
+        this.setState({ authToken, name });
         if (nextPath) {
           history.push(nextPath);
         } else {
@@ -60,14 +51,30 @@ class MasterAppProvider extends Component {
       });
   }
 
+  handleLogout = () => {
+    this.setState({ loggingOut: true });
+    const { history } = this.props;
+    axios.delete('/api/v1/auth/logout')
+      .then(() => {
+        message.success('Logged out!');
+        this.setState({ authToken: null, name: null });
+        this.setState({ loggingOut: false });
+        history.push('/');
+      })
+      .catch(() => {
+        message.error('An error occurred when logging out.');
+        this.setState({ loggingOut: false });
+      });
+  }
+
   render() {
     const { children } = this.props;
     return (
       <MasterAppContext.Provider
         value={ {
           updateNextPathName: this.updateNextPathName,
-          updateLoginCredentials: this.updateLoginCredentials,
           handleLogin: this.handleLogin,
+          handleLogout: this.handleLogout,
           ...this.state,
         } }
       >
@@ -80,6 +87,8 @@ class MasterAppProvider extends Component {
 MasterAppProvider.propTypes = {
   children: PropTypes.object,
   history: PropTypes.object,
+  authToken: PropTypes.object,
+  name: PropTypes.string,
 };
 
 export default withRouter(MasterAppProvider);
