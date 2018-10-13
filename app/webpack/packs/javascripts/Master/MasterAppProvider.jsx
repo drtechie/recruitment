@@ -17,9 +17,12 @@ class MasterAppProvider extends Component {
 
   componentDidMount() {
     const {
-      authToken, name,
+      authToken, name, history,
     } = this.props;
     this.setState({ authToken, name });
+    if (authToken) {
+      history.push('/select-interview');
+    }
   }
 
   updateNextPathName = (path) => {

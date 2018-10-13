@@ -9,9 +9,14 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   namespace :api, defaults: { format: "json" } do
     namespace :v1 do
+      # auth
       post "auth/login", to: "auth#login"
       delete "auth/logout", to: "auth#logout"
       get "auth/whoami", to: "auth#whoami"
+
+      # attempts
+      get "attempts", to: "attempts#index"
+      get "attempts/:attempt_id", to: "attempts#show"
     end
   end
   root to: "home#index"

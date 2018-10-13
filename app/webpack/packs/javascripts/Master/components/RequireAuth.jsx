@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
@@ -16,6 +16,7 @@ class RequireAuth extends Component {
     const {
       authenticated, history, location, updateNextPathName,
     } = nextProps;
+
     if (!authenticated) {
       updateNextPathName(location.pathname);
       history.push('/');
@@ -25,11 +26,7 @@ class RequireAuth extends Component {
 
   render() {
     const { children } = this.props;
-    return (
-      <div>
-        { children }
-      </div>
-    );
+    return children;
   }
 }
 

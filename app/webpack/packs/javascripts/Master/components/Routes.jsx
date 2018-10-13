@@ -8,6 +8,7 @@ import Shell from './Shell';
 import PageLoading from '../../Common/PageLoading';
 import RenderRoute from './RenderRoute';
 import LoadError from '../../Common/LoadError';
+import { withMaster } from '../withMaster';
 
 function MyLoadable(opts) {
   return Loadable(Object.assign({
@@ -27,10 +28,21 @@ const HelloAvegenView = MyLoadable({
   },
 });
 
+const SelectInterviewView = MyLoadable({
+  loader: () => import('../../SelectInterview/components/SelectInterview'),
+  render(loaded, props) {
+    const SelectInterview = loaded.default;
+    return (
+      <SelectInterview { ...props } />
+    );
+  },
+});
+
 class Routes extends Component {
   render() {
     const {
       location,
+      authToken,
     } = this.props;
 
     return (
@@ -46,9 +58,9 @@ class Routes extends Component {
             />
             <RenderRoute
               exact
-              path='/deee'
-              component={ HelloAvegenView }
-              authenticated={ false }
+              path='/select-interview'
+              component={ SelectInterviewView }
+              authenticated={ !!authToken }
               authRequired={ true }
             />
             <RenderRoute
@@ -64,6 +76,7 @@ class Routes extends Component {
 
 Routes.propTypes = {
   location: PropTypes.object,
+  authToken: PropTypes.object,
 };
 
-export default hot(module)(withRouter(Routes));
+export default hot(module)(withMaster(withRouter(Routes)));

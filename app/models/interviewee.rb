@@ -21,6 +21,7 @@
 
 class Interviewee < ApplicationRecord
   belongs_to :user
+  has_many :attempts
   validates_presence_of :user_id
 
   before_save :set_auth_code
