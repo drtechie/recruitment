@@ -38,6 +38,16 @@ const SelectInterviewView = MyLoadable({
   },
 });
 
+const AttemptInterviewView = MyLoadable({
+  loader: () => import('../../AttemptInterview/components/AttemptInterview'),
+  render(loaded, props) {
+    const AttemptInterview = loaded.default;
+    return (
+      <AttemptInterview { ...props } />
+    );
+  },
+});
+
 class Routes extends Component {
   render() {
     const {
@@ -60,6 +70,13 @@ class Routes extends Component {
               exact
               path='/select-interview'
               component={ SelectInterviewView }
+              authenticated={ !!authToken }
+              authRequired={ true }
+            />
+            <RenderRoute
+              exact
+              path='/attempt-interview/:attemptID'
+              component={ AttemptInterviewView }
               authenticated={ !!authToken }
               authRequired={ true }
             />

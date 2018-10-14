@@ -28,7 +28,7 @@ ActiveAdmin.register Category do
   form do |f|
     f.inputs do
       f.input :name
-      f.input :parent, as: :select, collection: Category.all
+      f.input :parent, as: :select, collection: Category.where("parent_id IS NULL")
     end
     f.actions
   end

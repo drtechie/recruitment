@@ -48,6 +48,7 @@ rules:
   react/jsx-filename-extension: 0
   react/prefer-stateless-function: 0
   react/require-default-props: 0
+  react/jsx-one-expression-per-line: 0,
   global-require: 0
   camelcase: 0
   "jsx-a11y/anchor-is-valid": [ "error", {

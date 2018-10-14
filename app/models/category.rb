@@ -25,4 +25,26 @@ class Category < ApplicationRecord
   has_and_belongs_to_many :questions
   has_and_belongs_to_many :interviews
   has_and_belongs_to_many :attempts
+
+  def self.get_tree(categories)
+    category_tree = []
+    categories.each do |category|
+      category_tree << category_json(category).merge!("children": category.children.map do |c|
+        category_json(c)
+      end).as_json
+    end
+    category_tree
+  end
+
+  def self.category_json(category)
+    {
+        id: category.id,
+        value: category.id,
+        title: category.name,
+        key: category.id
+    }
+  end
+
+  private_class_method :category_json
+
 end

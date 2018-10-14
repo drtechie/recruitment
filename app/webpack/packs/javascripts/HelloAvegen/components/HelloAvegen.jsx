@@ -15,6 +15,13 @@ class HelloAvegen extends React.Component {
     authCode: '',
   };
 
+  componentDidMount() {
+    const { authToken, history } = this.props;
+    if (authToken) {
+      history.push('/select-interview');
+    }
+  }
+
   handleEmailChange = (value) => {
     if (!value || value.indexOf('@') >= 0) {
       this.setState({
@@ -121,6 +128,8 @@ class HelloAvegen extends React.Component {
 HelloAvegen.propTypes = {
   handleLogin: PropTypes.func.isRequired,
   loggingIn: PropTypes.bool.isRequired,
+  history: PropTypes.object,
+  authToken: PropTypes.object,
 };
 
 export default withMaster(HelloAvegen);

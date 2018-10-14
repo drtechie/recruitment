@@ -6,19 +6,32 @@ module Api
       def index
         attempts = current_user.interviewee.attempts.includes(interview: [:categories])
         render json: { attempts: attempts.map do |attempt|
-          {
-            id: attempt.id,
-            intreview_name: attempt.interview.name,
-            categories: attempt.interview.categories.map do |category|
-                          { id: category.id, name: category.name, parent_id: category.parent_id }
-                        end,
-            current_state: attempt.current_state
-          }
+          attempt_json(attempt)
         end }
       end
 
       def show
-        render json: { message: "Logged out." }
+        unless params[:attempt_id]
+          return _unprocessable_data
+        end
+
+        attempt = Attempt.find_by(id: params[:attempt_id])
+        unless attempt
+          return _not_found
+        end
+
+        render json: { attempt: attempt_json(attempt) }
+      end
+
+      private
+
+      def attempt_json(attempt)
+        {
+          id: attempt.id,
+          interview_name: attempt.interview.name,
+          interview_categories: Category.get_tree(attempt.interview.categories),
+          current_state: attempt.current_state
+        }
       end
     end
   end

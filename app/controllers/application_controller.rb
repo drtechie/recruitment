@@ -29,8 +29,11 @@ class ApplicationController < ActionController::Base
   end
 
   def _unprocessable_data
-    render json: { error: "Unprocessable data." },
-           status: :unprocessable_data
+    render json: { error: "Unprocessable data." }, status: :unprocessable_data
+  end
+
+  def _not_found
+    render json: { error: "Not found." }, status: :not_found
   end
 
   private

@@ -1,12 +1,13 @@
 import React from 'react';
 import {
-  Tag, Button, Alert, List, Skeleton, Icon,
+  Tag, Button, List, Skeleton, Icon,
 } from 'antd';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { withMaster } from '../../Master/withMaster';
 import { capitalizeFirstLetter, getAttemptStateLabel } from '../../Common/Utils';
+import LoadError from '../../Common/LoadError';
 
 class SelectInterview extends React.Component {
   state = {
@@ -50,12 +51,7 @@ class SelectInterview extends React.Component {
             {
               error
               && (
-              <Alert
-                message='Error'
-                description={ errorMessage }
-                type='error'
-                showIcon
-              />
+                <LoadError message={ errorMessage } />
               )
             }
             {
@@ -68,7 +64,7 @@ class SelectInterview extends React.Component {
                 dataSource={ attempts }
                 renderItem={ attempt => (
                   <List.Item actions={ [
-                    <Link to={ `attempt/${ attempt.id }` }>
+                    <Link to={ `attempt-interview/${ attempt.id }` }>
                       <Button type='default' size='small' disabled={ ['reviewed', 'submitted'].includes(attempt.current_state) }>
                         { attempt.current_state === 'not_started' ? 'Start' : 'Continue' }
                         <Icon type='arrow-right' theme='outlined' />
@@ -77,7 +73,7 @@ class SelectInterview extends React.Component {
                   >
                     <Skeleton loading={ attempt.loading } active>
                       <List.Item.Meta
-                        title={ attempt.intreview_name }
+                        title={ attempt.interview_name }
                         description={ (
                           <Tag color={ getAttemptStateLabel(attempt.current_state) }>
                             {capitalizeFirstLetter(attempt.current_state.replace(/_/g, ' '))}

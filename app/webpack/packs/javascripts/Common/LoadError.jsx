@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Alert } from 'antd';
 
 export default class LoadError extends React.Component {
   static propTypes = {
@@ -9,10 +10,12 @@ export default class LoadError extends React.Component {
   render() {
     const { message } = this.props;
     return (
-      <div>
-        {message}
-      </div>
-
+      <Alert
+        message='Error'
+        description={ message }
+        type='error'
+        showIcon
+      />
     );
   }
 }
