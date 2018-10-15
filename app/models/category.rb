@@ -28,7 +28,7 @@ class Category < ApplicationRecord
 
   def self.get_tree(categories)
     category_tree = []
-    categories.each do |category|
+    categories.includes(:children).each do |category|
       category_tree << category_json(category).merge!("children": category.children.map do |c|
         category_json(c)
       end).as_json
@@ -38,13 +38,12 @@ class Category < ApplicationRecord
 
   def self.category_json(category)
     {
-        id: category.id,
-        value: category.id,
-        title: category.name,
-        key: category.id
+      id: category.id,
+      value: category.id,
+      title: category.name,
+      key: category.id
     }
   end
 
   private_class_method :category_json
-
 end

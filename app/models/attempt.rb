@@ -31,11 +31,12 @@ class Attempt < ApplicationRecord
   has_and_belongs_to_many :categories
   belongs_to :interviewee
   belongs_to :interview
-  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
-           to: :state_machine
+  has_many :transitions, class_name: "AttemptTransition", autosave: false
 
   include Statesman::Adapters::ActiveRecordQueries
-  has_many :transitions, class_name: "AttemptTransition", autosave: false
+
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+           to: :state_machine
 
   def state_machine
     @state_machine ||= AttemptStateMachine.new(self, transition_class: AttemptTransition,

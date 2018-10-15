@@ -57,8 +57,9 @@ class MasterAppProvider extends Component {
     axios.delete('/api/v1/auth/logout')
       .then(() => {
         message.success('Logged out!');
-        this.setState({ authToken: null, name: null });
-        this.setState({ loggingOut: false });
+        this.setState({
+          authToken: null, name: null, loggingOut: false, nextPath: null,
+        });
         history.push('/');
       })
       .catch(() => {

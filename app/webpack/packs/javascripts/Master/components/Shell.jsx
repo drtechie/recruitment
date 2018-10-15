@@ -33,15 +33,12 @@ class Shell extends React.Component {
             Interviews
           </Link>
         </Menu.Item>
-        <Menu.Item key='2'>2nd item</Menu.Item>
         <Menu.Item
           key='3'
           loading={ loggingOut }
           onClick={ () => handleLogout() }
         >
-          Logout
-          {' '}
-          <Icon type='logout' theme='outlined' />
+          Logout <Icon type='logout' theme='outlined' />
         </Menu.Item>
       </Menu>
     );
@@ -73,16 +70,12 @@ class Shell extends React.Component {
                   xs={ 9 }
                   className='margin-top-15'
                 >
-                  Hello,
-                  {' '}
-                  <span className='text-bold padding-right-15'>{ name }</span>
+                  Hello, <span className='text-bold padding-right-15'>{ name }</span>
                   <Dropdown overlay={ menu }>
                     <Button
                       type='primary'
                     >
-                      Menu
-                      {' '}
-                      <Icon type='down' />
+                      Menu <Icon type='down' />
                     </Button>
                   </Dropdown>
                 </Col>
@@ -93,11 +86,7 @@ class Shell extends React.Component {
           { children }
         </Content>
         <Footer style={ { textAlign: 'center' } } theme='dark'>
-          &copy;
-          {' '}
-          {(new Date()).getFullYear()}
-          {' '}
-Avegen India Pvt Ltd
+          &copy; {(new Date()).getFullYear()} Avegen India Pvt Ltd
         </Footer>
       </Layout>
     );

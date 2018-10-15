@@ -53,7 +53,7 @@ class AttemptStarter extends React.Component {
           <Button
             type='primary'
             loading={ starting }
-            onClick={ startAttempt }
+            onClick={ () => startAttempt(selectedCategories) }
           >
             Go!
           </Button>

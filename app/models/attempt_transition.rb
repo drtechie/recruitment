@@ -25,7 +25,7 @@
 
 class AttemptTransition < ActiveRecord::Base
   validates :to_state, inclusion: { in: AttemptStateMachine.states }
-  belongs_to :attempt, inverse_of: :attempt_transitions
+  belongs_to :attempt, inverse_of: :transitions
   after_destroy :update_most_recent, if: :most_recent?
 
   private

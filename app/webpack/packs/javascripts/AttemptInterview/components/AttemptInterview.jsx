@@ -34,13 +34,14 @@ class AttemptInterview extends React.Component {
       });
   }
 
-  startAttempt = () => {
+  startAttempt = (selectedCategories) => {
     this.setState({ starting: true });
     const {
       attempt: { id },
     } = this.state;
     axios.post('/api/v1/attempts/start', {
       attempt_id: id,
+      category_ids: selectedCategories,
     })
       .then((response) => {
         const { attempt } = response.data;
@@ -66,7 +67,9 @@ class AttemptInterview extends React.Component {
             {
               error
               && (
-                <LoadError message={ errorMessage } />
+                <div className='margin-bottom-1em'>
+                  <LoadError message={ errorMessage } />
+                </div>
               )
             }
             {
