@@ -15,4 +15,5 @@ class Interview < ApplicationRecord
   has_and_belongs_to_many :categories
   has_many :interviews_categories
   has_many :attempts
+  has_many :questions, through: :categories
 end

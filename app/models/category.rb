@@ -26,6 +26,17 @@ class Category < ApplicationRecord
   has_and_belongs_to_many :interviews
   has_and_belongs_to_many :attempts
 
+  def self.parents_and_children(categories)
+    all_categories = []
+    categories.includes(:children).each do |category|
+      all_categories << category
+      category.children.map do |child|
+        all_categories << child
+      end
+    end
+    all_categories.uniq
+  end
+
   def self.get_tree(categories)
     category_tree = []
     categories.includes(:children).each do |category|

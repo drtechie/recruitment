@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "#{Rails.root}/lib/next_question_fetcher"
 module Api
   module V1
     class AttemptsController < ApiController
@@ -27,11 +28,24 @@ module Api
       end
 
       def next_question
-        params[:category_ids].each do |id|
-          AttemptsCategories.create(attempt_id: @attempt.id, category_id: id)
+        question_fetcher = NextQuestionFetcher.new
+        next_question = question_fetcher.find_next_question(@attempt)
+        question = {}
+        if next_question.is_a?(Question)
+          details = {}
+          questionable = next_question.questionable
+          if questionable.is_a?(Essay)
+            details.merge!(questionable)
+          elsif questionable.is_a?(Mcq)
+            details[:options] = questionable.options.map do |option|
+              Haml::Engine.new(option).render
+            end
+          end
+          question = question.merge(question_json(next_question)).merge(details: details)
+          # Assign the question to attempt
+          AttemptsQuestions.first_or_create!(attempt_id: @attempt.id, question_id: next_question.id)
+          render json: { question: question }
         end
-        @attempt.transition_to!(:in_progress)
-        render json: { attempt: attempt_json(@attempt) }
       end
 
       private
@@ -53,6 +67,14 @@ module Api
           interview_name: attempt.interview.name,
           interview_categories: Category.get_tree(attempt.interview.categories),
           current_state: attempt.current_state
+        }
+      end
+
+      def question_json(question)
+        {
+          id: question.id,
+          type: question.questionable_type,
+          title: question.title
         }
       end
     end
