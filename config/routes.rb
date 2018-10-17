@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       get "attempts/:attempt_id", to: "attempts#show"
       post "attempts/start", to: "attempts#start"
       post "attempts/next-question", to: "attempts#next_question"
+      post "attempts/submit-answer", to: "attempts#submit_answer"
     end
   end
   root to: "home#index"

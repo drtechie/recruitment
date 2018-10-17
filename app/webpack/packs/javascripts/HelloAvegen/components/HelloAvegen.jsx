@@ -108,12 +108,11 @@ class HelloAvegen extends React.Component {
                 >
                   <Button
                     type='primary'
+                    className='margin-left-1em '
                     loading={ loggingIn }
                     onClick={ () => handleLogin(email, authCode) }
                   >
-                    Submit
-                    {' '}
-                    <Icon type='login' theme='outlined' />
+                    Submit <Icon type='login' theme='outlined' />
                   </Button>
                 </Col>
               </Row>

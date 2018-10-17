@@ -11,7 +11,7 @@ class NextQuestionFetcher
     # already assigned questions
     assigned_questions = attempt.questions
     # attempted questions - saved answers
-    attempted_questions = attempt.response&.dig("answers")&.keys || []
+    attempted_questions = attempt.response&.dig("answers")&.map { |a| a.keys[0].to_i } || []
     # check if there are questions assigned but not answered yet
     to_be_answered = assigned_questions.pluck(:id) - attempted_questions
     # if yes, return that question
@@ -27,7 +27,7 @@ class NextQuestionFetcher
     remaining_questions = (interview_questions - assigned_questions)
     # no more questions left
     if remaining_questions.blank?
-      return "Completed."
+      return "Completed"
     end
 
     # randomly select one question

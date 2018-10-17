@@ -4,7 +4,7 @@ require "#{Rails.root}/lib/next_question_fetcher"
 module Api
   module V1
     class AttemptsController < ApiController
-      before_action :set_attempt, only: %i(show start next_question)
+      before_action :set_attempt, only: %i(show start next_question submit_answer)
       def index
         attempts = current_user.interviewee.attempts.includes(:interview)
         render json: { attempts: attempts.map do |attempt|
@@ -44,9 +44,29 @@ module Api
           end
           question = question.merge(question_json(next_question)).merge(details: details)
           # Assign the question to attempt
-          AttemptsQuestions.first_or_create!(attempt_id: @attempt.id, question_id: next_question.id)
+          attempt_question = AttemptsQuestions.find_by(attempt_id: @attempt.id, question_id: next_question.id)
+          unless attempt_question
+            AttemptsQuestions.create!(attempt_id: @attempt.id, question_id: next_question.id)
+          end
           render json: { question: question }
+        elsif next_question == "Completed"
+          @attempt.transition_to!(:submitted)
+          render json: { attempt: attempt_json(@attempt), message: "Interview completed. You will be contacted soon." }
         end
+      end
+
+      def submit_answer
+        unless params[:answer]
+          return _unprocessable_data
+        end
+
+        attempt_response = @attempt.response || {}
+        answers = attempt_response&.dig("answers") || []
+        answers << params[:answer]
+        attempt_response["answers"] = answers
+        @attempt.response = attempt_response
+        @attempt.save!
+        render json: { message: "Answer saved" }
       end
 
       private

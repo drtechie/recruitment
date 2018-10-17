@@ -17,12 +17,14 @@ class MCQ extends React.Component {
             question.details.options.map((option, key) => (
               <li
                 key={ String.fromCharCode(65 + key) }
-                dangerouslySetInnerHTML={ { __html: option } }
+                dangerouslySetInnerHTML={ // eslint-disable-line react/no-danger
+                  { __html: option }
+                }
               />
             ))
           }
         </ol>
-        <CheckboxGroup onChange={ onChange } value={ value }>
+        <CheckboxGroup onChange={ onChange } value={ value } className='margin-top-3em'>
           {
             question.details.options.map((option, key) => (
               <Checkbox
@@ -41,7 +43,7 @@ class MCQ extends React.Component {
 MCQ.propTypes = {
   question: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.object,
+  value: PropTypes.array,
 };
 
 export default MCQ;

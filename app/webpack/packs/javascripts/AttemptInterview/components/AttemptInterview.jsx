@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { message as popupMessage, Alert } from 'antd';
 import { withMaster } from '../../Master/withMaster';
 import LoadError from '../../Common/LoadError';
 import AttemptStarter from './AttemptStarter';
@@ -11,6 +12,7 @@ import ShowQuestion from './ShowQuestion';
 class AttemptInterview extends React.Component {
   state = {
     attempt: {},
+    attemptMessage: 'You answers are under review. You will be contacted soon.',
     error: false,
     errorMessage: '',
     loading: false,
@@ -18,6 +20,7 @@ class AttemptInterview extends React.Component {
     question: {},
     fetchingNextQuestion: false,
     submittingAnswer: false,
+    skippingAnswer: false,
   };
 
   componentDidMount() {
@@ -26,7 +29,7 @@ class AttemptInterview extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { state: { attempt: { current_state } } } = this;
-    if (current_state !== prevState.attempt.current_state) {
+    if (current_state === 'in_progress' && current_state !== prevState.attempt.current_state) {
       this.fetchNewQuestion();
     }
   }
@@ -75,8 +78,16 @@ class AttemptInterview extends React.Component {
       attempt_id: id,
     })
       .then((response) => {
-        const { question } = response.data;
-        this.setState({ question });
+        const { question, attempt, message } = response.data;
+        if (attempt) {
+          this.setState({ attempt });
+        }
+        if (question) {
+          this.setState({ question });
+        }
+        if (message) {
+          this.setState({ attemptMessage: message });
+        }
         this.setState({ fetchingNextQuestion: false });
       })
       .catch((error) => {
@@ -85,8 +96,12 @@ class AttemptInterview extends React.Component {
       });
   }
 
-  submitAnswer = (answer) => {
-    this.setState({ submittingAnswer: true });
+  submitAnswer = (answer, skip) => {
+    if (skip) {
+      this.setState({ skippingAnswer: true });
+    } else {
+      this.setState({ submittingAnswer: true });
+    }
     const {
       attempt: { id },
     } = this.state;
@@ -95,20 +110,31 @@ class AttemptInterview extends React.Component {
       answer,
     })
       .then((response) => {
-        const { question } = response.data;
-        this.setState({ question });
-        this.setState({ submittingAnswer: false });
+        const { message } = response.data;
+        popupMessage.success(message);
+        if (skip) {
+          this.setState({ skippingAnswer: false });
+        } else {
+          this.setState({ submittingAnswer: false });
+        }
+        this.fetchNewQuestion();
       })
       .catch((error) => {
+        popupMessage.error('An error occurred while submitting the answer. Contact support if issue persists.');
         this.setState({ error: true, errorMessage: error.response.data.error });
-        this.setState({ submittingAnswer: false });
+        if (skip) {
+          this.setState({ skippingAnswer: false });
+        } else {
+          this.setState({ submittingAnswer: false });
+        }
       });
   }
 
   render() {
     const {
-      error, errorMessage, attempt, starting,
+      error, errorMessage, attempt, starting, attemptMessage,
       loading, fetchingNextQuestion, question, submittingAnswer,
+      skippingAnswer,
     } = this.state;
     return (
       <Grid
@@ -145,6 +171,18 @@ class AttemptInterview extends React.Component {
                   question={ question }
                   submitAnswer={ this.submitAnswer }
                   submitting={ submittingAnswer }
+                  skipping={ skippingAnswer }
+                />
+              )
+            }
+            {
+              attempt.current_state === 'submitted'
+              && (
+                <Alert
+                  message='Answers Submitted'
+                  description={ attemptMessage }
+                  type='success'
+                  showIcon
                 />
               )
             }

@@ -1,23 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Input } from 'antd';
+
+const { TextArea } = Input;
 
 class Essay extends React.Component {
   render() {
     const {
-      question, onChange,
+      onChange, value,
     } = this.props;
 
     return (
       <div>
-        Essay question
+        <TextArea rows={ 4 } value={ value || '' } onChange={ (e) => onChange(e.target.value) } />
       </div>
     );
   }
 }
 
 Essay.propTypes = {
-  question: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
+  value: PropTypes.string,
 };
 
 export default Essay;
