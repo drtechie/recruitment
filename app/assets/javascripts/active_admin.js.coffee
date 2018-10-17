@@ -3,11 +3,11 @@
 #= require nested_form_fields
 #= require active_admin/json_editor.js
 #= require codemirror
-#= require codemirror/modes/xml
-#= require codemirror/modes/htmlmixed
+#= require codemirror/modes/markdown
+#= require codemirror/addons/mode/overlay
+#= require codemirror/addons/selection/active-line
 #= require codemirror/modes/javascript
-#= require codemirror/modes/ruby
-#= require codemirror/modes/haml
+#= require codemirror/modes/gfm
 
 $ ->
   removeFromArrayInput = (el) ->
@@ -94,7 +94,7 @@ $(document).ready ->
   initializeHAMLEl = (el) ->
     editor = CodeMirror.fromTextArea $(el).get(0),
       lineNumbers: true
-      mode: 'text/x-haml'
+      mode: 'gfm'
     $(el).data('CodeMirrorInstance', editor);
     return
   initializeHAML = () ->

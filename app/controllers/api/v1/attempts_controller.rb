@@ -35,10 +35,11 @@ module Api
           details = {}
           questionable = next_question.questionable
           if questionable.is_a?(Essay)
-            details.merge!(questionable)
+            details.merge!(questionable.attributes)
           elsif questionable.is_a?(Mcq)
+            markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, tables: true)
             details[:options] = questionable.options.map do |option|
-              Haml::Engine.new(option).render
+              markdown.render(option)
             end
           end
           question = question.merge(question_json(next_question)).merge(details: details)
