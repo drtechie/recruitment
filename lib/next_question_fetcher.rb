@@ -19,6 +19,12 @@ class NextQuestionFetcher
       return Question.find(to_be_answered.first)
     end
 
+    # check if maximum allowed questions in the interview has been answered
+    maximum_questions = attempt.interview.config&.dig("maximum_questions")
+    if maximum_questions && attempted_questions.count >= maximum_questions
+      return "Completed"
+    end
+
     # selected categories of attempt
     attempt_categories = Category.parents_and_children(attempt.categories)
     # questions in above categories
