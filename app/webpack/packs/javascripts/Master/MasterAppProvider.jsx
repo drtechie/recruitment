@@ -10,6 +10,7 @@ class MasterAppProvider extends Component {
   state = {
     nextPath: null,
     authToken: null,
+    orgName: null,
     name: null,
     loggingIn: false,
     loggingOut: false,
@@ -17,9 +18,9 @@ class MasterAppProvider extends Component {
 
   componentDidMount() {
     const {
-      authToken, name,
+      authToken, name, orgName,
     } = this.props;
-    this.setState({ authToken, name });
+    this.setState({ authToken, name, orgName });
   }
 
   updateNextPathName = (path) => {
@@ -90,6 +91,7 @@ MasterAppProvider.propTypes = {
   history: PropTypes.object,
   authToken: PropTypes.object,
   name: PropTypes.string,
+  orgName: PropTypes.string,
 };
 
 export default withRouter(MasterAppProvider);

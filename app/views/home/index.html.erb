@@ -5,6 +5,7 @@
                 id: "master",
                 data: {
                     authToken: current_user ? User.create_token("web", current_user.id) : nil,
-                    name: current_user ? current_user.full_name : nil
+                    name: current_user ? current_user.full_name : nil,
+                    orgName: ENV["ORG_NAME"]
                 }.to_json do %>
 <% end %>

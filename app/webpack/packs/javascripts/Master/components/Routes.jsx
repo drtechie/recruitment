@@ -18,12 +18,12 @@ function MyLoadable(opts) {
   }, opts));
 }
 
-const HelloAvegenView = MyLoadable({
-  loader: () => import('../../HelloAvegen/components/HelloAvegen'),
+const HelloIntervieweeView = MyLoadable({
+  loader: () => import('../../HelloInterviewee/components/HelloInterviewee'),
   render(loaded, props) {
-    const HelloAvegen = loaded.default;
+    const HelloInterviewee = loaded.default;
     return (
-      <HelloAvegen { ...props } />
+      <HelloInterviewee { ...props } />
     );
   },
 });
@@ -64,7 +64,7 @@ class Routes extends Component {
             <RenderRoute
               exact
               path='/'
-              component={ HelloAvegenView }
+              component={ HelloIntervieweeView }
             />
             <RenderRoute
               exact

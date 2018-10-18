@@ -5,7 +5,7 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import avegenLogo from '../../../images/avegen-logo.png';
+import logo from '../../../images/logo.png';
 import { withMaster } from '../withMaster';
 
 const { Content, Footer } = Layout;
@@ -15,13 +15,14 @@ class Shell extends React.Component {
     children: PropTypes.object.isRequired,
     authToken: PropTypes.object,
     name: PropTypes.string,
+    orgName: PropTypes.string,
     handleLogout: PropTypes.func.isRequired,
     loggingOut: PropTypes.bool.isRequired,
   }
 
   render() {
     const {
-      children, authToken, handleLogout, loggingOut, name,
+      children, authToken, handleLogout, loggingOut, name, orgName,
     } = this.props;
 
     const menu = (
@@ -60,9 +61,9 @@ class Shell extends React.Component {
               <Row>
                 <Col xs={ 3 }>
                   <img
-                    src={ avegenLogo }
+                    src={ logo }
                     width='150px'
-                    alt='Avegen Logo'
+                    alt={ `${ orgName } Logo` }
                   />
                 </Col>
                 <Col
@@ -86,7 +87,7 @@ class Shell extends React.Component {
           { children }
         </Content>
         <Footer style={ { textAlign: 'center' } } theme='dark'>
-          &copy; {(new Date()).getFullYear()} Avegen India Pvt Ltd
+          &copy; {(new Date()).getFullYear()} {orgName}
         </Footer>
       </Layout>
     );

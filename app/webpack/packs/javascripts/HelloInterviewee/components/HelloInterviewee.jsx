@@ -5,10 +5,10 @@ import {
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import QueueAnim from 'rc-queue-anim';
 import PropTypes from 'prop-types';
-import avegenLogo from '../../../images/avegen-logo.png';
+import logo from '../../../images/logo.png';
 import { withMaster } from '../../Master/withMaster';
 
-class HelloAvegen extends React.Component {
+class HelloInterviewee extends React.Component {
   state = {
     dataSource: [],
     email: '',
@@ -43,7 +43,7 @@ class HelloAvegen extends React.Component {
   };
 
   render() {
-    const { loggingIn, handleLogin } = this.props;
+    const { loggingIn, handleLogin, orgName } = this.props;
     const { dataSource, email, authCode } = this.state;
     return (
       <Grid
@@ -63,15 +63,15 @@ class HelloAvegen extends React.Component {
               <Row center='xs' key='logo'>
                 <Col xs={ 4 }>
                   <img
-                    src={ avegenLogo }
+                    src={ logo }
                     width='100%'
-                    alt='Avegen Logo'
+                    alt={ `${ orgName } Logo` }
                   />
                 </Col>
               </Row>
               <Row center='xs' key='welcome'>
                 <Col xs={ 8 } className='margin-top-15'>
-                  <h3 className='text-center'>Welcome to Avegen India Pvt Ltd Recruitment</h3>
+                  <h3 className='text-center'>Welcome to {orgName} Recruitment</h3>
                 </Col>
               </Row>
               <Row center='xs' key='email'>
@@ -124,11 +124,12 @@ class HelloAvegen extends React.Component {
   }
 }
 
-HelloAvegen.propTypes = {
+HelloInterviewee.propTypes = {
   handleLogin: PropTypes.func.isRequired,
   loggingIn: PropTypes.bool.isRequired,
   history: PropTypes.object,
   authToken: PropTypes.object,
+  orgName: PropTypes.string,
 };
 
-export default withMaster(HelloAvegen);
+export default withMaster(HelloInterviewee);
