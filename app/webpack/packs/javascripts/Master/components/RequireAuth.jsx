@@ -1,8 +1,8 @@
-import { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router';
 
-class RequireAuth extends Component {
+class RequireAuth extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
   }
@@ -14,10 +14,10 @@ class RequireAuth extends Component {
 
   static getDerivedStateFromProps(nextProps) {
     const {
-      authenticated, history, location, updateNextPathName,
+      authenticated, history, location, updateNextPathName, isAdmin, adminPrivRequired,
     } = nextProps;
 
-    if (!authenticated) {
+    if (!authenticated || (!isAdmin && adminPrivRequired)) {
       updateNextPathName(location.pathname);
       history.push('/');
     }

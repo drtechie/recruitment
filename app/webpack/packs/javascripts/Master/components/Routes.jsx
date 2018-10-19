@@ -48,11 +48,22 @@ const AttemptInterviewView = MyLoadable({
   },
 });
 
+const PreviewQuestionView = MyLoadable({
+  loader: () => import('../../PreviewQuestion/components/PreviewQuestion'),
+  render(loaded, props) {
+    const PreviewQuestion = loaded.default;
+    return (
+      <PreviewQuestion { ...props } />
+    );
+  },
+});
+
 class Routes extends Component {
   render() {
     const {
       location,
       authToken,
+      isAdmin,
     } = this.props;
 
     return (
@@ -81,6 +92,15 @@ class Routes extends Component {
               authRequired={ true }
             />
             <RenderRoute
+              exact
+              path='/preview-question/:questionID'
+              component={ PreviewQuestionView }
+              authenticated={ !!authToken }
+              authRequired={ true }
+              isAdmin={ isAdmin }
+              adminPrivRequired={ true }
+            />
+            <RenderRoute
               component={ LoadError }
               message='Not found.'
             />
@@ -94,6 +114,7 @@ class Routes extends Component {
 Routes.propTypes = {
   location: PropTypes.object,
   authToken: PropTypes.object,
+  isAdmin: PropTypes.bool,
 };
 
 export default hot(module)(withMaster(withRouter(Routes)));

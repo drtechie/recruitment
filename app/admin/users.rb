@@ -39,6 +39,16 @@ ActiveAdmin.register User do
   filter :created_at
   filter :admin
 
+  member_action :confirm, method: "get" do
+    user = User.find(params[:id])
+    user.confirm
+    redirect_to admin_user_path(user), notice: "User confirmed!"
+  end
+
+  action_item :confirm_user, only: :show do
+    link_to("Confirm User", confirm_admin_user_path(user))
+  end
+
   form do |f|
     f.inputs do
       f.input :title

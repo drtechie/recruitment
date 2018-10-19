@@ -24,7 +24,8 @@ module Api
         sign_out current_user
         sign_in(:user, user)
         render json: { authToken: User.create_token(client_id, user.id, ttl),
-                       name: current_user.full_name }
+                       name: current_user.full_name,
+                       isAdmin: current_user.admin? }
       end
 
       def logout

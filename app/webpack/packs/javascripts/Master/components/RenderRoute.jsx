@@ -10,6 +10,8 @@ const RenderRoute = ({
   parent: ParentComponent,
   authRequired,
   authenticated,
+  isAdmin,
+  adminPrivRequired,
   updateNextPathName,
   ...rest
 }) => (
@@ -40,7 +42,12 @@ const RenderRoute = ({
         };
         if (authRequired) {
           return (
-            <RequireAuth authenticated={ authenticated } updateNextPathName={ updateNextPathName }>
+            <RequireAuth
+              authenticated={ authenticated }
+              updateNextPathName={ updateNextPathName }
+              isAdmin={ isAdmin }
+              adminPrivRequired={ adminPrivRequired }
+            >
               { renderComponents() }
             </RequireAuth>
           );
@@ -62,6 +69,8 @@ RenderRoute.propTypes = {
   ]),
   authRequired: PropTypes.bool,
   authenticated: PropTypes.bool,
+  isAdmin: PropTypes.bool,
+  adminPrivRequired: PropTypes.bool,
   updateNextPathName: PropTypes.func.isRequired,
 };
 

@@ -31,6 +31,10 @@ ActiveAdmin.register Mcq do
     end
   end
 
+  action_item :preview, only: :show do
+    link_to("Preview", "/preview-question/#{mcq.question.id}")
+  end
+
   filter :categories, collection: lambda {
     Category.all.map { |category| [category.name, category.id] }
   }

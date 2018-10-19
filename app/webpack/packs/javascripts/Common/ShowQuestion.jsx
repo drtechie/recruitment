@@ -45,7 +45,7 @@ class ShowQuestion extends React.Component {
 
   render() {
     const {
-      question, submitting, skipping,
+      question, submitting, skipping, preview,
     } = this.props;
 
     const { value } = this.state;
@@ -55,24 +55,29 @@ class ShowQuestion extends React.Component {
         <h3> { question.title } </h3>
         { question.type === 'Mcq' && <MCQ question={ question } onChange={ this.onChange } value={ value } />}
         { question.type === 'Essay' && <Essay question={ question } onChange={ this.onChange } value={ value } />}
-        <div className='margin-top-3em'>
-          <Button
-            type='primary'
-            loading={ submitting }
-            disabled={ (value && value.length === 0) || !value }
-            onClick={ this.submitAnswer }
-          >
-            Submit
-          </Button>
-          <Button
-            className='margin-left-1em'
-            type='danger'
-            loading={ skipping }
-            onClick={ this.skipAnswer }
-          >
-            Skip
-          </Button>
-        </div>
+        {
+          !preview
+          && (
+          <div className='margin-top-3em'>
+            <Button
+              type='primary'
+              loading={ submitting }
+              disabled={ (value && value.length === 0) || !value }
+              onClick={ this.submitAnswer }
+            >
+              Submit
+            </Button>
+            <Button
+              className='margin-left-1em'
+              type='danger'
+              loading={ skipping }
+              onClick={ this.skipAnswer }
+            >
+              Skip
+            </Button>
+          </div>
+          )
+        }
       </div>
     );
   }
@@ -80,9 +85,10 @@ class ShowQuestion extends React.Component {
 
 ShowQuestion.propTypes = {
   question: PropTypes.object.isRequired,
-  submitAnswer: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired,
-  skipping: PropTypes.bool.isRequired,
+  submitAnswer: PropTypes.func,
+  submitting: PropTypes.bool,
+  skipping: PropTypes.bool,
+  preview: PropTypes.bool,
 };
 
 export default ShowQuestion;

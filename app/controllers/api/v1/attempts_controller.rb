@@ -4,6 +4,7 @@ require "#{Rails.root}/lib/next_question_fetcher"
 module Api
   module V1
     class AttemptsController < ApiController
+      include QuestionConcern
       before_action :set_attempt, only: %i(show start next_question submit_answer)
       def index
         attempts = current_user.interviewee.attempts.includes(:interview)
@@ -32,16 +33,7 @@ module Api
         next_question = question_fetcher.find_next_question(@attempt)
         question = {}
         if next_question.is_a?(Question)
-          details = {}
-          questionable = next_question.questionable
-          if questionable.is_a?(Essay)
-            details.merge!(questionable.attributes)
-          elsif questionable.is_a?(Mcq)
-            markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, tables: true)
-            details[:options] = questionable.options.map do |option|
-              markdown.render(option)
-            end
-          end
+          details = question_details(next_question)
           question = question.merge(question_json(next_question)).merge(details: details)
           # Assign the question to attempt
           attempt_question = AttemptsQuestions.find_by(attempt_id: @attempt.id, question_id: next_question.id)
@@ -82,7 +74,7 @@ module Api
           return _unprocessable_data
         end
 
-        @attempt = Attempt.find_by(id: params[:attempt_id])
+        @attempt = Attempt.find_by(id: params[:attempt_id].to_i)
         unless @attempt
           _not_found
         end
@@ -94,14 +86,6 @@ module Api
           interview_name: attempt.interview.name,
           interview_categories: Category.get_tree(attempt.interview.categories),
           current_state: attempt.current_state
-        }
-      end
-
-      def question_json(question)
-        {
-          id: question.id,
-          type: question.questionable_type,
-          title: question.title
         }
       end
     end

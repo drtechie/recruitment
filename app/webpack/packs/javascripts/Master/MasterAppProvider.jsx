@@ -7,20 +7,20 @@ import { message } from 'antd';
 const MasterAppContext = React.createContext();
 
 class MasterAppProvider extends Component {
-  state = {
-    nextPath: null,
-    authToken: null,
-    orgName: null,
-    name: null,
-    loggingIn: false,
-    loggingOut: false,
-  }
-
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     const {
-      authToken, name, orgName,
-    } = this.props;
-    this.setState({ authToken, name, orgName });
+      authToken, name, orgName, isAdmin,
+    } = props;
+    this.state = {
+      nextPath: null,
+      authToken,
+      orgName,
+      isAdmin,
+      name,
+      loggingIn: false,
+      loggingOut: false,
+    };
   }
 
   updateNextPathName = (path) => {
@@ -92,6 +92,7 @@ MasterAppProvider.propTypes = {
   authToken: PropTypes.object,
   name: PropTypes.string,
   orgName: PropTypes.string,
+  isAdmin: PropTypes.bool,
 };
 
 export default withRouter(MasterAppProvider);

@@ -7,7 +7,7 @@ import { withMaster } from '../../Master/withMaster';
 import LoadError from '../../Common/LoadError';
 import AttemptStarter from './AttemptStarter';
 import PageLoading from '../../Common/PageLoading';
-import ShowQuestion from './ShowQuestion';
+import ShowQuestion from '../../Common/ShowQuestion';
 
 class AttemptInterview extends React.Component {
   state = {

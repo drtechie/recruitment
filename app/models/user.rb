@@ -62,7 +62,7 @@ class User < ApplicationRecord
   end
 
   def password_required?
-    new_record? ? false : super
+    false
   end
 
   private
