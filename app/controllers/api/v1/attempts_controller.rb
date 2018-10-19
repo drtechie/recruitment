@@ -62,7 +62,13 @@ module Api
 
         attempt_response = @attempt.response || {}
         answers = attempt_response&.dig("answers") || []
-        answers << params[:answer]
+        question_id = params[:answer].keys[0]
+        answered_question_index = answers.find_index { |a| a.keys[0] == question_id }
+        if answered_question_index
+          answers[answered_question_index] = params[:answer]
+        else
+          answers << params[:answer]
+        end
         attempt_response["answers"] = answers
         @attempt.response = attempt_response
         @attempt.save!

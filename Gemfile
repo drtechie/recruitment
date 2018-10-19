@@ -43,8 +43,8 @@ group :development do
   gem "listen", ">= 3.0.5", "< 3.2"
   gem "pry-byebug"
   gem "pry-stack_explorer"
-  gem "rubocop", require: false
   gem "rails-erd"
+  gem "rubocop", require: false
   gem "search_object"
   gem "search_object_graphql"
   gem "web-console", ">= 3.3.0"
