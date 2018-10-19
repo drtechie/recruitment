@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Interview do
+  includes :interviews_categories, :categories
   permit_params :name, :config, category_ids: []
   json_editor
 

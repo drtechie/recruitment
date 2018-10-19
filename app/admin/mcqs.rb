@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Mcq do
+  includes :question, :categories
   menu parent: "Questions"
   json_editor
   permit_params options: [], question_attributes: [:title, category_ids: []], correct_options: []

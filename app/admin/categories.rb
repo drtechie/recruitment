@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Category do
+  includes :parent
   permit_params :parent_id, :name
 
   index do

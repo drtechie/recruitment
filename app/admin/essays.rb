@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Essay do
+  includes :question, :categories
   menu parent: "Questions"
   permit_params :answer_min_length, :answer_max_length, question_attributes: [:title, category_ids: []]
 

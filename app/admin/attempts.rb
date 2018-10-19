@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Attempt do
+  includes :interviewee, :interview
   permit_params :interview_id, :interviewee_id
   json_editor
 
