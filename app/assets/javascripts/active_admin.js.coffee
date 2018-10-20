@@ -47,7 +47,6 @@ $ ->
       clone_id = "clone_#{Math.floor((Math.random() * 100000) + 1)}"
       textarea    = $(clone).find('textarea')
       myInstance = $(textarea).data('CodeMirrorInstance');
-      console.log(myInstance)
       if $(textarea).val() != '' || (myInstance && myInstance.getValue() != '')
         # Remove error classes from original's textarea
         $(original)
