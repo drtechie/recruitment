@@ -66,8 +66,8 @@ task :deploy do
     invoke :"deploy:link_shared_paths"
     invoke :"bundle:install"
     invoke :"yarn:install"
-    command %{#{fetch(:rails)} db:seed}
     invoke :"rails:db_migrate"
+    command %{#{fetch(:rails)} db:seed}
     invoke :"rails:assets_precompile"
     invoke :"deploy:cleanup"
 
