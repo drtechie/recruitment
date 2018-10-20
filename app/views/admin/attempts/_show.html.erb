@@ -1,0 +1,54 @@
+<h3>Attempt details</h3>
+
+<h4>Interview categories</h4>
+<ul>
+  <% attempt.interview.categories.each do |category| %>
+    <li><%= category.name %></li>
+    <ul>
+      <% category.walk_tree do |cat, level| %>
+        <li><%= "#{'-'*level}#{cat.name}" %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</ul>
+
+
+<h4>Categories selected by interviewee</h4>
+<ul>
+  <% attempt.categories.each do |category| %>
+    <li><%= category.name %></li>
+  <% end %>
+</ul>
+
+<h4>Questions and Answers</h4>
+
+<ol>
+  <% attempt.response&.dig("answers")&.each do |answer| %>
+    <% question = @indexed_questions[answer.keys[0].to_i] %>
+    <li>
+      <h5><%= question.title %></h5>
+      <% if question.questionable_type == "Mcq" %>
+        <p>
+          <strong> Correct Answers: </strong>
+          <% correct_options = question.questionable.correct_options %>
+          <% correct_options.each_with_index do |option, index| %>
+            <%= (65 + option.to_i).chr %><% if index != correct_options.size - 1 %>,<% end %>
+          <% end %>
+        </p>
+        <p>
+          <strong>  Answered by interviewee: </strong>
+          <% answered_options = answer.values[0] %>
+          <% answered_options.each_with_index do |option, index| %>
+            <%= (65 + option.to_i).chr %><% if index != answered_options.size - 1 %>,<% end %>
+          <% end %>
+        </p>
+      <% elsif question.questionable_type == "Essay" %>
+        <p><strong> Answer: </strong></p>
+        <p>
+          <%= answer.values[0] %>
+        </p>
+      <% end %>
+
+    </li>
+  <% end %>
+</ol>

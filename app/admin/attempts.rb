@@ -22,11 +22,19 @@ ActiveAdmin.register Attempt do
       row :categories do |attempt|
         attempt.categories.map(&:name).join(", ")
       end
-      row :questions do |attempt|
-        attempt.questions.map(&:title).join(", ")
-      end
       row :created_at
       row :updated_at
+    end
+    render partial: "show", locals: { attempt: attempt }
+  end
+
+  controller do
+    def show
+      questions = resource.response&.dig("answers")&.map do |ans|
+        Question.includes(:questionable).find_by(id: ans.keys[0])
+      end
+      @indexed_questions = questions.index_by(&:id)
+      super
     end
   end
 

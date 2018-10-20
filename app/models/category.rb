@@ -17,6 +17,7 @@
 
 class Category < ApplicationRecord
   extend ActsAsTree::TreeView
+  extend ActsAsTree::TreeWalker
   acts_as_tree order: "name"
   validates_presence_of :name
   has_many :categories_questions
