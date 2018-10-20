@@ -3,6 +3,7 @@
 require "mina/bundler"
 require "mina/rails"
 require "mina/git"
+require "mina/puma"
 # require 'mina/rbenv'  # for rbenv support. (https://rbenv.org)
 require "mina/rvm" # for rvm support. (https://rvm.io)
 require File.expand_path("./environment", __dir__)
