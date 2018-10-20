@@ -67,8 +67,6 @@ task :deploy do
     invoke :"bundle:install"
     invoke :"yarn:install"
     invoke :"rails:db_migrate"
-    command %{#{fetch(:rails)} db:seed}
-    command %{export NODE_ENV=production}
     invoke :"rails:assets_precompile"
     invoke :"deploy:cleanup"
 
