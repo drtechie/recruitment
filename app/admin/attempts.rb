@@ -33,7 +33,7 @@ ActiveAdmin.register Attempt do
       questions = resource.response&.dig("answers")&.map do |ans|
         Question.includes(:questionable).find_by(id: ans.keys[0])
       end
-      @indexed_questions = questions.index_by(&:id)
+      @indexed_questions = questions&.index_by(&:id) || []
       super
     end
   end
