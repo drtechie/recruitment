@@ -36,7 +36,7 @@
           <% end %>
         </p>
         <p>
-          <strong>  Answered by interviewee: </strong>
+          <strong> Answered by interviewee: </strong>
           <% answered_options = answer.values[0] %>
           <% answered_options.each_with_index do |option, index| %>
             <%= (65 + option.to_i).chr %><% if index != answered_options.size - 1 %>,<% end %>
