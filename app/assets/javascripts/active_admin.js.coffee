@@ -52,7 +52,6 @@ $ ->
         $(original)
           .find('textarea')
           .removeClass('has-error')
-        console.log("called")
         # Reset clone's textarea
         $(textarea)
           .removeClass('has-error')
