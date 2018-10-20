@@ -11,7 +11,7 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
-@import "active_admin/json_editor.css";
+@import "active_admin/json_editor";
 @import "codemirror";
 
 // Overriding any non-variable SASS must be done after the fact.
