@@ -117,4 +117,12 @@ Routes.propTypes = {
   isAdmin: PropTypes.bool,
 };
 
-export default hot(module)(withMaster(withRouter(Routes)));
+let routes = withMaster(withRouter(Routes));
+
+if (process.env.NODE_ENV === 'development') {
+  routes = hot(module)(routes);
+}
+
+const routesExport = routes;
+
+export default routesExport;
