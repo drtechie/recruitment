@@ -46,9 +46,8 @@ $ ->
       clone    = $(original).clone(true)
       clone_id = "clone_#{Math.floor((Math.random() * 100000) + 1)}"
       textarea    = $(clone).find('textarea')
-
-      console.log($(textarea).val() != '')
       myInstance = $(textarea).data('CodeMirrorInstance');
+      console.log(myInstance)
       if $(textarea).val() != '' || (myInstance && myInstance.getValue() != '')
         # Remove error classes from original's textarea
         $(original)
@@ -75,7 +74,7 @@ $ ->
         $(@).parent().parent().append $(clone)
         $("##{clone_id}").focus()
         if (myInstance)
-          initializeHAMLEl(textarea)
+          initializeMarkdownEl(textarea)
 
 
       else
@@ -91,16 +90,16 @@ $ ->
     removeFromArrayInput $(@)
 
 $(document).ready ->
-  initializeHAMLEl = (el) ->
+  initializeMarkdownEl = (el) ->
     editor = CodeMirror.fromTextArea $(el).get(0),
       lineNumbers: true
       mode: 'gfm'
     $(el).data('CodeMirrorInstance', editor);
     return
-  initializeHAML = () ->
+  initializeMarkdown = () ->
     if ('.codemirror-array').length > 0
       $('.codemirror-array').each ->
-        initializeHAMLEl(this)
+        initializeMarkdownEl(this)
         return
-  window.initializeHAMLEl = initializeHAMLEl
-  setTimeout(initializeHAML, 1000)
+  window.initializeMarkdownEl = initializeMarkdownEl
+  setTimeout(initializeMarkdown, 1000)
