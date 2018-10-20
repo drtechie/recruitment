@@ -29,7 +29,8 @@ set :port, ENV["SSH_PORT"] || "22" # SSH port number.
 # Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 set :shared_dirs, fetch(:shared_dirs, []).push("node_modules", "log", "tmp/pids", "tmp/sockets")
-set :shared_files, fetch(:shared_files, []).push(".env", "config/puma.rb")
+set :shared_files, fetch(:shared_files, []).push(".env", "config/puma.rb", "app/webpack/packs/images/logo.png",
+                                                 "config/master.key")
 set :asset_dirs, ["app/assets/images", "app/assets/javascripts",
                   "app/assets/stylesheets", "vendor/assets", "app/webpack/packs/images",
                   "app/webpack/packs/javascripts", "app/webpack/packs/stylesheets"]
