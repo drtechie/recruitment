@@ -27,6 +27,7 @@
     <% question = @indexed_questions[answer.keys[0].to_i] %>
     <li>
       <h5><%= question.title %></h5>
+      <% answered_options = answer.values[0] %>
       <% if question.questionable_type == "Mcq" %>
         <p>
           <strong> Correct Answers: </strong>
@@ -37,18 +38,24 @@
         </p>
         <p>
           <strong> Answered by interviewee: </strong>
-          <% answered_options = answer.values[0] %>
-          <% answered_options.each_with_index do |option, index| %>
-            <%= (65 + option.to_i).chr %><% if index != answered_options.size - 1 %>,<% end %>
+          <% if answered_options %>
+            <% answered_options&.each_with_index do |option, index| %>
+              <%= (65 + option.to_i).chr %><% if index != answered_options.size - 1 %>,<% end %>
+            <% end %>
+          <% else %>
+            Skipped
           <% end %>
         </p>
       <% elsif question.questionable_type == "Essay" %>
         <p><strong> Answer: </strong></p>
-        <p>
-          <%= answer.values[0] %>
-        </p>
+        <% if answered_options %>
+          <p>
+            <%= answer.values[0] %>
+          </p>
+        <% else %>
+          Skipped
+        <% end %>
       <% end %>
-
     </li>
   <% end %>
 </ol>
