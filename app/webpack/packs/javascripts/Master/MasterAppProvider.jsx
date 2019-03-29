@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { withRouter } from 'react-router';
+import { withCookies, Cookies } from 'react-cookie';
 import { message } from 'antd';
 
 const MasterAppContext = React.createContext();
@@ -27,6 +28,16 @@ class MasterAppProvider extends Component {
     this.setState({ nextPath: path });
   }
 
+  setCookie = (key, data) => {
+    const { cookies } = this.props;
+    cookies.set(key, JSON.stringify(data), { path: '/' });
+  }
+
+  deleteCookie = (key) => {
+    const { cookies } = this.props;
+    cookies.remove(key, { path: '/' });
+  }
+
   handleLogin = (email, authCode) => {
     const { history } = this.props;
     const { nextPath } = this.state;
@@ -39,6 +50,7 @@ class MasterAppProvider extends Component {
         message.success('Logged in!');
         const { authToken, name } = response.data;
         this.setState({ authToken, name });
+        this.setCookie('authToken', authToken);
         if (nextPath) {
           history.push(nextPath);
         } else {
@@ -61,6 +73,7 @@ class MasterAppProvider extends Component {
         this.setState({
           authToken: null, name: null, loggingOut: false, nextPath: null,
         });
+        this.deleteCookie('authToken');
         history.push('/');
       })
       .catch(() => {
@@ -93,8 +106,9 @@ MasterAppProvider.propTypes = {
   name: PropTypes.string,
   orgName: PropTypes.string,
   isAdmin: PropTypes.bool,
+  cookies: PropTypes.instanceOf(Cookies),
 };
 
-export default withRouter(MasterAppProvider);
+export default withRouter(withCookies(MasterAppProvider));
 
 export const MasterAppConsumer = MasterAppContext.Consumer;

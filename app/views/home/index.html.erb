@@ -4,7 +4,7 @@
 <%= content_tag :div,
                 id: "master",
                 data: {
-                    authToken: current_user ? User.create_token("web", current_user.id) : nil,
+                    authToken: current_user ? get_auth_token : nil,
                     name: current_user&.full_name,
                     isAdmin: current_user&.admin?,
                     orgName: ENV["ORG_NAME"]

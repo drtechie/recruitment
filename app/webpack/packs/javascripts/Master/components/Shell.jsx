@@ -17,12 +17,11 @@ class Shell extends React.Component {
     name: PropTypes.string,
     orgName: PropTypes.string,
     handleLogout: PropTypes.func.isRequired,
-    loggingOut: PropTypes.bool.isRequired,
   }
 
   render() {
     const {
-      children, authToken, handleLogout, loggingOut, name, orgName,
+      children, authToken, handleLogout, name, orgName,
     } = this.props;
 
     const menu = (
@@ -36,7 +35,6 @@ class Shell extends React.Component {
         </Menu.Item>
         <Menu.Item
           key='3'
-          loading={ loggingOut }
           onClick={ () => handleLogout() }
         >
           Logout <Icon type='logout' theme='outlined' />

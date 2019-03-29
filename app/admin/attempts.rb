@@ -10,6 +10,7 @@ ActiveAdmin.register Attempt do
     id_column
     column :interview
     column :interviewee
+    column :current_state
     actions
   end
 

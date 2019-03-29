@@ -1,61 +1,70 @@
 <h3>Attempt details</h3>
 
-<h4>Interview categories</h4>
-<ul>
-  <% attempt.interview.categories.each do |category| %>
-    <li><%= category.name %></li>
-    <ul>
-      <% category.walk_tree do |cat, level| %>
-        <li><%= "#{'-'*level}#{cat.name}" %></li>
-      <% end %>
-    </ul>
-  <% end %>
-</ul>
+<% if attempt.current_state == "submitted" %>
+
+  <h4>Interview categories</h4>
+  <ul>
+    <% attempt.interview.categories.each do |category| %>
+      <li><%= category.name %></li>
+      <ul>
+        <% category.walk_tree do |cat, level| %>
+          <li><%= "#{'-'*level}#{cat.name}" %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </ul>
 
 
-<h4>Categories selected by interviewee</h4>
-<ul>
-  <% attempt.categories.each do |category| %>
-    <li><%= category.name %></li>
-  <% end %>
-</ul>
+  <h4>Categories selected by interviewee</h4>
+  <ul>
+    <% attempt.categories.each do |category| %>
+      <li><%= category.name %></li>
+    <% end %>
+  </ul>
 
-<h4>Questions and Answers</h4>
+  <h4>Questions and Answers</h4>
 
-<ol>
-  <% attempt.response&.dig("answers")&.each do |answer| %>
-    <% question = @indexed_questions[answer.keys[0].to_i] %>
-    <li>
-      <h5><%= question.title %></h5>
-      <% answered_options = answer.values[0] %>
-      <% if question.questionable_type == "Mcq" %>
-        <p>
-          <strong> Correct Answers: </strong>
-          <% correct_options = question.questionable.correct_options %>
-          <% correct_options.each_with_index do |option, index| %>
-            <%= (65 + option.to_i).chr %><% if index != correct_options.size - 1 %>,<% end %>
-          <% end %>
-        </p>
-        <p>
-          <strong> Answered by interviewee: </strong>
-          <% if answered_options %>
-            <% answered_options&.each_with_index do |option, index| %>
-              <%= (65 + option.to_i).chr %><% if index != answered_options.size - 1 %>,<% end %>
+  <ol>
+    <% attempt.response&.dig("answers")&.each do |answer| %>
+      <% question = @indexed_questions[answer.keys[0].to_i] %>
+      <li>
+        <h5><%= question.title %></h5>
+        <% answered_options = answer.values[0] %>
+        <% if question.questionable_type == "Mcq" %>
+          <p>
+            <strong> Correct Answers: </strong>
+            <% correct_options = question.questionable.correct_options %>
+            <% correct_options.each_with_index do |option, index| %>
+              <%= (65 + option.to_i).chr %><% if index != correct_options.size - 1 %>,<% end %>
             <% end %>
+          </p>
+          <p>
+            <strong> Answered by interviewee: </strong>
+            <% if answered_options %>
+              <% answered_options&.each_with_index do |option, index| %>
+                <%= (65 + option.to_i).chr %><% if index != answered_options.size - 1 %>,<% end %>
+              <% end %>
+            <% else %>
+              Skipped
+            <% end %>
+          </p>
+        <% elsif question.questionable_type == "Essay" %>
+          <p><strong> Answer: </strong></p>
+          <% if answered_options %>
+            <p>
+              <%= answer.values[0] %>
+            </p>
           <% else %>
             Skipped
           <% end %>
-        </p>
-      <% elsif question.questionable_type == "Essay" %>
-        <p><strong> Answer: </strong></p>
-        <% if answered_options %>
-          <p>
-            <%= answer.values[0] %>
-          </p>
-        <% else %>
-          Skipped
         <% end %>
-      <% end %>
-    </li>
-  <% end %>
-</ol>
+      </li>
+    <% end %>
+  </ol>
+
+<% else %>
+
+  <p><strong> <%= attempt.current_state.sub("_", " ").capitalize %></strong></p>
+
+<% end %>
+
