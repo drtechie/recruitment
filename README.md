@@ -6,24 +6,22 @@
  - Supports Multiple Choice Questions (MCQs) and Essays.
  - Organize questions under categories and subcategories.
  - Track responses given by interviewees.
+ - Timed assessments
  
 ## To do
 
  - Make sure equal number of questions are sampled from each category
- - Add weights to questions, select questions based on how the interviewee is answering ( Eg:- Ask tougher questions if the interviewee is performing well) 
+ - Add weights to questions, select questions based on how the interviewee is answering (eg:- ask tougher questions if the interviewee is performing well) 
  - Add `mandatory_categories` for interviews
- - `scheduled_start` and `end` time for attempts
- - Time based interviews
+ - `scheduled_start` time for attempts
  
 ## Prerequisites
 
- - Ruby version: **2.5.1**
+ - Ruby version: **2.7.8**
 
  - Database: **PostgreSQL**
  
- - Node: **v9+**
- 
- - NPM: **v5+**
+ - Node: **v16+**
 
 ### Database Setup
 
@@ -80,7 +78,7 @@ This starts a webpack server in addition to the rails server (puma) so you can t
 ## Recruitment Setup
 
 - `cp .env.example .env` and edit the ORG_NAME
-- Copy Organization logo to `app/webpack/packs/images/logo.png`
+- Copy organization logo to `app/webpack/packs/images/logo.png`
 
 ## Interview setup.
 
