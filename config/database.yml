@@ -81,6 +81,6 @@ test:
 #
 production:
   <<: *default
-  database: recruitment_production
-  username: recruitment
+  database: <%= ENV['RECRUITMENT_DATABASE_NAME'] %>
+  username: <%= ENV['RECRUITMENT_DATABASE_USER'] %>
   password: <%= ENV['RECRUITMENT_DATABASE_PASSWORD'] %>
