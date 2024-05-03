@@ -84,8 +84,30 @@ class Shell extends React.Component {
           }
           { children }
         </Content>
-        <Footer style={ { textAlign: 'center' } } theme='dark'>
-          &copy; {(new Date()).getFullYear()} {orgName}
+        <Footer
+          theme='dark'
+          style={ {
+            margin: '0 69px',
+            padding: '24px 0',
+          } }
+        >
+          <Row style={ {
+            'justifyContent': 'space-between',
+            'marginRight': 0,
+            'marginLeft': 0,
+          } }>
+            <Col>
+              &copy; { (new Date()).getFullYear() } {orgName}
+            </Col>
+            <Col style={{ textAlign: 'right' }}>
+              <a
+                href='https://github.com/drtechie/recruitment'
+                target='_blank'
+              >
+                <Icon type="github" /> drtechie/recruitment
+              </a>
+            </Col>
+          </Row>
         </Footer>
       </Layout>
     );

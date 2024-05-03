@@ -5,7 +5,7 @@ module Api
   module V1
     class AttemptsController < ApiController
       include QuestionConcern
-      before_action :set_attempt, only: %i(show start next_question submit_answer)
+      before_action :set_attempt, only: %i(show start next_question submit_answer end)
       def index
         attempts = current_user.interviewee.attempts.includes(:interview)
         render json: { attempts: attempts.map do |attempt|
@@ -22,10 +22,25 @@ module Api
           params[:category_ids].each do |id|
             AttemptsCategories.create(attempt_id: @attempt.id, category_id: id)
           end
-          @attempt.transition_to!(:in_progress)
+          Attempt.transaction do
+            @attempt.transition_to!(:in_progress)
+            @attempt.started_at = Time.now
+            @attempt.save!
+          end
           return render json: { attempt: attempt_json(@attempt) }
         end
         _unprocessable_data
+      end
+
+      def end
+        if @attempt.current_state != "submitted"
+          Attempt.transaction do
+            @attempt.transition_to!(:submitted)
+            @attempt.ended_at = Time.now unless @attempt.ended_at
+            @attempt.save!
+          end
+        end
+        render json: { attempt: attempt_json(@attempt), message: "Interview completed. You will be contacted soon." }
       end
 
       def next_question
@@ -42,7 +57,11 @@ module Api
           end
           render json: { question: question }
         elsif next_question == "Completed"
-          @attempt.transition_to!(:submitted)
+          Attempt.transaction do
+            @attempt.transition_to!(:submitted)
+            @attempt.ended_at = Time.now
+            @attempt.save!
+          end
           render json: { attempt: attempt_json(@attempt), message: "Interview completed. You will be contacted soon." }
         end
       end
@@ -85,7 +104,10 @@ module Api
           id: attempt.id,
           interview_name: attempt.interview.name,
           interview_categories: Category.get_tree(attempt.interview.categories),
-          current_state: attempt.current_state
+          current_state: attempt.current_state,
+          started_at: attempt.started_at.to_i,
+          ended_at: attempt.ended_at.to_i,
+          time_allowed: attempt.interview.config&.dig("time_allowed")
         }
       end
     end

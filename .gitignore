@@ -6,6 +6,8 @@
 
 # Ignore bundler config.
 /.bundle
+.DS_Store
+app/webpack/packs/images/logo.jpg
 
 # Ignore all logfiles and tempfiles.
 /log/*

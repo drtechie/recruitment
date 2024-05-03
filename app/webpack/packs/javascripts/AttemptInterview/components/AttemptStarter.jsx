@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, TreeSelect } from 'antd';
+import { Button, TreeSelect, Alert } from 'antd';
 import PropTypes from 'prop-types';
 
 const { SHOW_PARENT } = TreeSelect;
@@ -38,14 +38,19 @@ class AttemptStarter extends React.Component {
     return (
       <div>
         <h4>
-          Starting <code>{ attempt.interview_name}</code> interivew
+          Starting <code>{ attempt.interview_name }</code>
         </h4>
         <p>
+          Welcome to the assessment.
           Select the categories of questions you wish to answer.
-          You must select at least <code>2</code> categories.
-          Remember that the more number of categories you answer,
-          more the chances of proving your abilities. :)
         </p>
+        {
+          attempt.time_allowed && (
+            <p>
+              <Alert message={`You will have a total of ${attempt.time_allowed} minutes to complete the assessment. Once you start, the timer will begin, and you cannot pause or restart the timer. You can reload the page and come back to where you left off, but the timer will keep ticking once started.`} type="warning" />
+            </p>
+          )
+        }
         <div>
           <TreeSelect { ...tProps } />
         </div>

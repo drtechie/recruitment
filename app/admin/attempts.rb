@@ -25,6 +25,8 @@ ActiveAdmin.register Attempt do
       end
       row :created_at
       row :updated_at
+      row :started_at
+      row :ended_at
     end
     render partial: "show", locals: { attempt: attempt }
   end

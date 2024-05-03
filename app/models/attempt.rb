@@ -33,7 +33,7 @@ class Attempt < ApplicationRecord
   belongs_to :interview
   has_many :transitions, class_name: "AttemptTransition", autosave: false
 
-  include Statesman::Adapters::ActiveRecordQueries
+  include Statesman::Adapters::ActiveRecordQueries[transition_class: AttemptTransition, initial_state: :not_started]
 
   delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
            to: :state_machine

@@ -2,12 +2,13 @@ import React from 'react';
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { message as popupMessage, Alert } from 'antd';
+import { message as popupMessage, Result } from 'antd';
 import { withMaster } from '../../Master/withMaster';
 import LoadError from '../../Common/LoadError';
 import AttemptStarter from './AttemptStarter';
 import PageLoading from '../../Common/PageLoading';
 import ShowQuestion from '../../Common/ShowQuestion';
+import CountDown from "../../Common/Countdown";
 
 class AttemptInterview extends React.Component {
   state = {
@@ -57,6 +58,25 @@ class AttemptInterview extends React.Component {
     axios.post('/api/v1/attempts/start', {
       attempt_id: id,
       category_ids: selectedCategories,
+    })
+      .then((response) => {
+        const { attempt } = response.data;
+        this.setState({ attempt });
+        this.setState({ starting: false });
+      })
+      .catch((error) => {
+        this.setState({ error: true, errorMessage: error.response.data.error });
+        this.setState({ starting: false });
+      });
+  }
+
+  endAttempt = () => {
+    this.setState({ starting: true });
+    const {
+      attempt: { id },
+    } = this.state;
+    axios.post('/api/v1/attempts/end', {
+      attempt_id: id,
     })
       .then((response) => {
         const { attempt } = response.data;
@@ -136,6 +156,12 @@ class AttemptInterview extends React.Component {
       loading, fetchingNextQuestion, question, submittingAnswer,
       skippingAnswer,
     } = this.state;
+
+    let targetTime;
+    if (attempt.time_allowed && attempt.started_at) {
+      const date = new Date(attempt.started_at * 1000);
+      targetTime = date.setMinutes(date.getMinutes() + attempt.time_allowed);
+    }
     return (
       <Grid
         fluid
@@ -165,6 +191,13 @@ class AttemptInterview extends React.Component {
               )
             }
             {
+              targetTime && attempt.current_state === 'in_progress' &&
+              <CountDown
+                target={ targetTime }
+                onEnd={ this.endAttempt }
+              />
+            }
+            {
               attempt.current_state === 'in_progress' && question
               && (
                 <ShowQuestion
@@ -178,11 +211,10 @@ class AttemptInterview extends React.Component {
             {
               attempt.current_state === 'submitted'
               && (
-                <Alert
-                  message='Answers Submitted'
-                  description={ attemptMessage }
-                  type='success'
-                  showIcon
+                <Result
+                  status="success"
+                  title="Answers Submitted"
+                  subTitle={ attemptMessage }
                 />
               )
             }
