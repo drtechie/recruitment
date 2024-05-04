@@ -95,6 +95,9 @@ $(document).ready ->
     $(el).data('CodeMirrorInstance', editor);
     return
   initializeMarkdown = () ->
+    if ('.codemirror-title').length > 0
+      $('.codemirror-title').each ->
+        initializeMarkdownEl(this)
     if ('.codemirror-array').length > 0
       $('.codemirror-array').each ->
         initializeMarkdownEl(this)

@@ -14,3 +14,8 @@ export function getAttemptStateLabel(state) {
       return '#DDE65B';
   }
 }
+
+
+export const htmlWithLineBreaks = (textWithLineBreaks) => {
+  return textWithLineBreaks.replace(/\n/g, '<br>');
+}

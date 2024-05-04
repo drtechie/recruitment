@@ -13,6 +13,7 @@
 
 class Essay < ApplicationRecord
   has_one :question, as: :questionable, dependent: :destroy
-  accepts_nested_attributes_for :question, reject_if: ->(attributes) { attributes["title"].blank? }
+  accepts_nested_attributes_for :question, reject_if: ->(attributes) { attributes["title"].blank? },
+                                :update_only => true
   has_many :categories, through: :question
 end

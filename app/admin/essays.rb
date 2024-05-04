@@ -41,7 +41,7 @@ ActiveAdmin.register Essay do
 
   form do |f|
     f.inputs for: [:question, @resource.question || Question.new], builder: ActiveAdmin::FormBuilder do |ff|
-      ff.input :title
+      ff.input :title, class: "codemirror-title"
       ff.input :categories
     end
     f.inputs do
