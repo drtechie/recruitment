@@ -42,7 +42,7 @@ ActiveAdmin.register Mcq do
 
   form do |f|
     f.inputs for: [:question, @resource.question || Question.new], builder: ActiveAdmin::FormBuilder do |ff|
-      ff.input :title
+      ff.input :title, as: :text, input_html: { class: "codemirror-title", escape: false }
       ff.input :categories
     end
     f.inputs do

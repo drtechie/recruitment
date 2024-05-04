@@ -13,7 +13,6 @@ module QuestionConcern
     if questionable.is_a?(Essay)
       details.merge!(questionable.attributes)
     elsif questionable.is_a?(Mcq)
-      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, tables: true)
       details[:options] = questionable.options.map do |option|
         markdown.render(option)
       end
@@ -25,7 +24,13 @@ module QuestionConcern
     {
       id: question.id,
       type: question.questionable_type,
-      title: question.title
+      title: markdown.render(question.title)
     }
+  end
+
+  private
+
+  def markdown
+    @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, tables: true)
   end
 end

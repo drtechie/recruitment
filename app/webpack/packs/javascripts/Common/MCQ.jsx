@@ -1,6 +1,7 @@
 import React from 'react';
 import { Checkbox } from 'antd';
 import PropTypes from 'prop-types';
+import {htmlWithLineBreaks} from "./Utils";
 
 const CheckboxGroup = Checkbox.Group;
 
@@ -18,7 +19,7 @@ class MCQ extends React.Component {
               <li
                 key={ String.fromCharCode(65 + key) }
                 dangerouslySetInnerHTML={ // eslint-disable-line react/no-danger
-                  { __html: option }
+                  { __html: htmlWithLineBreaks(option) }
                 }
               />
             ))

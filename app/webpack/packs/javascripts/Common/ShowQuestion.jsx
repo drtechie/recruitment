@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import MCQ from './MCQ';
 import Essay from './Essay';
+import { htmlWithLineBreaks } from "./Utils";
 
 class ShowQuestion extends React.Component {
   state = {
@@ -52,7 +53,11 @@ class ShowQuestion extends React.Component {
 
     return (
       <div>
-        <h3> { question.title } </h3>
+        <h3
+          dangerouslySetInnerHTML={ // eslint-disable-line react/no-danger
+            { __html: htmlWithLineBreaks(question.title) }
+          }
+        />
         { question.type === 'Mcq' && <MCQ question={ question } onChange={ this.onChange } value={ value } />}
         { question.type === 'Essay' && <Essay question={ question } onChange={ this.onChange } value={ value } />}
         {
