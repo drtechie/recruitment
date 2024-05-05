@@ -198,7 +198,7 @@ class AttemptInterview extends React.Component {
               />
             }
             {
-              attempt.current_state === 'in_progress' && question
+              attempt.current_state === 'in_progress' && question.title
               && (
                 <ShowQuestion
                   question={ question }

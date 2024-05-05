@@ -108,7 +108,8 @@ MasterAppProvider.propTypes = {
   history: PropTypes.object,
   authToken: PropTypes.object,
   name: PropTypes.string,
-  orgName: PropTypes.object,
+  orgName: PropTypes.string,
+  orgConfig: PropTypes.object,
   isAdmin: PropTypes.bool,
   cookies: PropTypes.instanceOf(Cookies),
 };
