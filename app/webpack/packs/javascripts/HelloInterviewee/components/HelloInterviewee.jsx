@@ -5,7 +5,6 @@ import {
 import { Grid, Row, Col } from 'react-flexbox-grid';
 import QueueAnim from 'rc-queue-anim';
 import PropTypes from 'prop-types';
-import logo from '../../../images/logo.png';
 import { withMaster } from '../../Master/withMaster';
 
 class HelloInterviewee extends React.Component {
@@ -43,7 +42,7 @@ class HelloInterviewee extends React.Component {
   };
 
   render() {
-    const { loggingIn, handleLogin, orgName } = this.props;
+    const { loggingIn, handleLogin, orgName, orgLogo } = this.props;
     const { dataSource, email, authCode } = this.state;
     return (
       <Grid
@@ -63,7 +62,7 @@ class HelloInterviewee extends React.Component {
               <Row center='xs' key='logo'>
                 <Col xs={ 4 }>
                   <img
-                    src={ logo }
+                    src={ orgLogo }
                     width='100%'
                     alt={ `${ orgName } Logo` }
                   />
@@ -130,6 +129,7 @@ HelloInterviewee.propTypes = {
   history: PropTypes.object,
   authToken: PropTypes.object,
   orgName: PropTypes.string,
+  orgLogo: PropTypes.string,
 };
 
 export default withMaster(HelloInterviewee);

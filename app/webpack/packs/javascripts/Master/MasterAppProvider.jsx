@@ -11,12 +11,16 @@ class MasterAppProvider extends Component {
   constructor(props) {
     super(props);
     const {
-      authToken, name, orgName, isAdmin,
+      authToken, name,
+      orgConfig: { logo: orgLogo },
+      orgName,
+      isAdmin,
     } = props;
     this.state = {
       nextPath: null,
       authToken,
       orgName,
+      orgLogo,
       isAdmin,
       name,
       loggingIn: false,
@@ -104,7 +108,7 @@ MasterAppProvider.propTypes = {
   history: PropTypes.object,
   authToken: PropTypes.object,
   name: PropTypes.string,
-  orgName: PropTypes.string,
+  orgName: PropTypes.object,
   isAdmin: PropTypes.bool,
   cookies: PropTypes.instanceOf(Cookies),
 };

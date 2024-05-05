@@ -5,7 +5,6 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { Grid, Row, Col } from 'react-flexbox-grid';
-import logo from '../../../images/logo.png';
 import { withMaster } from '../withMaster';
 
 const { Content, Footer } = Layout;
@@ -16,12 +15,13 @@ class Shell extends React.Component {
     authToken: PropTypes.object,
     name: PropTypes.string,
     orgName: PropTypes.string,
+    orgLogo: PropTypes.string,
     handleLogout: PropTypes.func.isRequired,
   }
 
   render() {
     const {
-      children, authToken, handleLogout, name, orgName,
+      children, authToken, handleLogout, name, orgName, orgLogo,
     } = this.props;
 
     const menu = (
@@ -59,7 +59,7 @@ class Shell extends React.Component {
               <Row>
                 <Col xs={ 3 }>
                   <img
-                    src={ logo }
+                    src={ orgLogo }
                     width='150px'
                     alt={ `${ orgName } Logo` }
                   />

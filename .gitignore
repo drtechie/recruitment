@@ -37,5 +37,5 @@ yarn-debug.log*
 /.idea
 
 # Ignore Org specific configurations
-/app/webpack/packs/images/logo.png
+/public/assets/logos/logo.png
 .env

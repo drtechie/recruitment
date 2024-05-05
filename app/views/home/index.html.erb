@@ -7,6 +7,7 @@
                     authToken: current_user ? get_auth_token : nil,
                     name: current_user&.full_name,
                     isAdmin: current_user&.admin?,
-                    orgName: ENV["ORG_NAME"]
+                    orgName: @org_name,
+                    orgConfig: @config
                 }.to_json do %>
 <% end %>
