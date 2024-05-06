@@ -57,6 +57,7 @@ class ShowQuestion extends React.Component {
           dangerouslySetInnerHTML={ // eslint-disable-line react/no-danger
             { __html: htmlWithLineBreaks(question.title) }
           }
+          className='unselectable'
         />
         { question.type === 'Mcq' && <MCQ question={ question } onChange={ this.onChange } value={ value } />}
         { question.type === 'Essay' && <Essay question={ question } onChange={ this.onChange } value={ value } />}

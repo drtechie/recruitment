@@ -21,6 +21,7 @@ class MCQ extends React.Component {
                 dangerouslySetInnerHTML={ // eslint-disable-line react/no-danger
                   { __html: htmlWithLineBreaks(option) }
                 }
+                className='unselectable'
               />
             ))
           }

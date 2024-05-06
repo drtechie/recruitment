@@ -32,6 +32,7 @@ class Attempt < ApplicationRecord
   belongs_to :interviewee
   belongs_to :interview
   has_many :transitions, class_name: "AttemptTransition", autosave: false
+  has_many :events, dependent: :destroy
 
   include Statesman::Adapters::ActiveRecordQueries[transition_class: AttemptTransition, initial_state: :not_started]
 

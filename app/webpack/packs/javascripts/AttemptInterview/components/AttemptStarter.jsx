@@ -13,6 +13,25 @@ class AttemptStarter extends React.Component {
     this.setState({ selectedCategories });
   }
 
+  openFullscreen() {
+    const element = document.documentElement;
+    if (!document.fullscreenElement) {
+      if (element.requestFullscreen) {
+        element.requestFullscreen();
+      } else if (element.mozRequestFullScreen) { /* Firefox */
+        element.mozRequestFullScreen();
+      } else if (element.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        element.webkitRequestFullscreen();
+      } else if (element.msRequestFullscreen) { /* IE/Edge */
+        element.msRequestFullscreen();
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.openFullscreen();
+  }
+
   render() {
     const {
       attempt, startAttempt, starting,

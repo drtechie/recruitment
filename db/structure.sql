@@ -326,6 +326,39 @@ ALTER SEQUENCE public.essays_id_seq OWNED BY public.essays.id;
 
 
 --
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    name character varying,
+    params json,
+    attempt_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
+
+
+--
 -- Name: interviewees; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -644,6 +677,13 @@ ALTER TABLE ONLY public.essays ALTER COLUMN id SET DEFAULT nextval('public.essay
 
 
 --
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: interviewees id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -770,6 +810,14 @@ ALTER TABLE ONLY public.categories_questions
 
 ALTER TABLE ONLY public.essays
     ADD CONSTRAINT essays_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -949,6 +997,13 @@ CREATE INDEX index_categories_questions_on_question_id ON public.categories_ques
 
 
 --
+-- Name: index_events_on_attempt_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_attempt_id ON public.events USING btree (attempt_id);
+
+
+--
 -- Name: index_interviewees_on_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1061,6 +1116,14 @@ ALTER TABLE ONLY public.attempts
 
 
 --
+-- Name: events fk_rails_47913470e5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT fk_rails_47913470e5 FOREIGN KEY (attempt_id) REFERENCES public.attempts(id);
+
+
+--
 -- Name: interviewees fk_rails_7b059af869; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1132,6 +1195,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181003144755'),
 ('20181003172759'),
 ('20181007093903'),
-('20240505141751');
+('20240505141751'),
+('20240506055249');
 
 

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post "attempts/end", to: "attempts#end"
       post "attempts/next-question", to: "attempts#next_question"
       post "attempts/submit-answer", to: "attempts#submit_answer"
+      post "attempts/:attempt_id/events", to: "events#create"
       get "questions/preview/:question_id", to: "questions#preview"
     end
   end

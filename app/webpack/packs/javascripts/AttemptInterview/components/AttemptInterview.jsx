@@ -11,6 +11,15 @@ import ShowQuestion from '../../Common/ShowQuestion';
 import CountDown from "../../Common/Countdown";
 
 class AttemptInterview extends React.Component {
+  constructor(props) {
+    super(props);
+    this.trackMouseEventThrottled = this.debounce(this.trackEvent, 5000);
+    this.trackWindowEventThrottled = this.debounce(this.trackEvent, 5000);
+    this.trackEvent = this.trackEvent.bind(this)
+    this.trackVisibilityChange = this.trackVisibilityChange.bind(this)
+    this.trackFullscreenChange = this.trackFullscreenChange.bind(this)
+  }
+
   state = {
     attempt: {},
     attemptMessage: 'You answers are under review. You will be contacted soon.',
@@ -26,12 +35,99 @@ class AttemptInterview extends React.Component {
 
   componentDidMount() {
     this.getAttempt();
+    document.addEventListener('contextmenu', this.handleContextMenu);
+    document.addEventListener('click', this.trackEvent);
+    document.addEventListener('mousemove', this.trackMouseEvent);
+    document.addEventListener('mousedown', this.trackMouseEvent);
+    document.addEventListener('mouseup', this.trackMouseEvent);
+
+    // Add event listener to track window events
+    window.addEventListener('resize', this.trackWindowEvent);
+    window.addEventListener('scroll', this.trackWindowEvent);
+    document.addEventListener("visibilitychange", this.trackVisibilityChange);
+    document.addEventListener("fullscreenchange", this.trackFullscreenChange);
+
+    // Add event listener to track keyboard events
+    document.addEventListener('keydown', this.trackKeyboardEvent);
+    document.addEventListener('keyup', this.trackKeyboardEvent);
+    document.addEventListener('keypress', this.trackKeyboardEvent);
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { state: { attempt: { current_state } } } = this;
     if (current_state === 'in_progress' && current_state !== prevState.attempt.current_state) {
       this.fetchNewQuestion();
+    }
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('contextmenu', this.handleContextMenu);
+    document.removeEventListener('click', this.trackEvent);
+    document.removeEventListener('mousemove', this.trackEventThrottled);
+    document.removeEventListener('mousedown', this.trackEventThrottled);
+    document.removeEventListener('mouseup', this.trackEventThrottled);
+
+    window.removeEventListener('resize', this.trackWindowEvent);
+    window.removeEventListener('scroll', this.trackWindowEvent);
+    document.removeEventListener("visibilitychange", this.trackVisibilityChange);
+    document.removeEventListener("fullscreenchange", this.trackFullscreenChange);
+
+    document.removeEventListener('keydown', this.trackKeyboardEvent);
+    document.removeEventListener('keyup', this.trackKeyboardEvent);
+    document.removeEventListener('keypress', this.trackKeyboardEvent);
+  }
+
+  debounce(func, delay) {
+    let timeoutId;
+    return function(...args) {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  }
+
+  handleContextMenu = (event) => {
+    event.preventDefault();
+  }
+
+  trackMouseEvent = (event) => {
+    this.trackMouseEventThrottled(event.type, { clientX: event.clientX, clientY: event.clientY });
+  }
+
+  trackWindowEvent = (event) => {
+    this.trackWindowEventThrottled(event.type, { innerWidth: window.innerWidth, innerHeight: window.innerHeight });
+  }
+
+  trackKeyboardEvent = (event) => {
+    this.trackEvent(event.type, { key: event.key });
+  }
+
+  trackVisibilityChange() {
+    this.trackEvent('visibilitychange', { visibilityState: document.visibilityState });
+  }
+
+  trackFullscreenChange() {
+    this.trackEvent('fullscreenchange', { fullscreen: !!document.fullscreenElement });
+  }
+
+  trackEvent = (eventName, params) => {
+    const {
+      attempt
+    } = this.state;
+    const eventData = {
+      name: eventName,
+      params: params
+    };
+
+    if (attempt.id) {
+      axios.post(`/api/v1/attempts/${attempt.id}/events`, eventData)
+        .then(response => {
+          console.log('Event submitted successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('Error submitting event:', error);
+        });
     }
   }
 
