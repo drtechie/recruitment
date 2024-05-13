@@ -24,7 +24,10 @@ ActiveAdmin.register Attempt do
         attempt.categories.map(&:name).join(", ")
       end
       row "Final Aggregate Score" do
-        calculate_aggregate_score(resource)
+        total_questions = @indexed_questions.size
+        max_possible_score = total_questions # Assuming each question is worth 1 point
+        aggregate_score = calculate_aggregate_score(resource)
+        "#{aggregate_score}/#{max_possible_score} (#{total_questions} questions)"
       end
       row :created_at
       row :updated_at
