@@ -15,6 +15,11 @@ ActiveAdmin.register Attempt do
   end
 
   show do
+    # TODO: DRY
+    questions = resource.response&.dig("answers")&.map do |ans|
+      Question.includes(:questionable).find_by(id: ans.keys[0])
+    end
+    @indexed_questions = questions&.index_by(&:id) || []
     attributes_table do
       row :id
       row :interview
