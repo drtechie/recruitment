@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import { Typography } from 'antd';
+import React, {Component} from 'react';
+import {Typography} from 'antd';
 
-const { Text } = Typography;
+const {Text} = Typography;
 
 function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -114,11 +114,11 @@ class CountDown extends Component {
   };
 
   render() {
-    const {format = this.defaultFormat, onEnd, ...rest} = this.props;
+    const {format = this.defaultFormat, onEnd, label, type, ...rest} = this.props;
     const {lastTime} = this.state;
     const result = format(lastTime);
 
-    return <Text {...rest} strong={true} type='danger'>{result}</Text>;
+    return <Text {...rest} strong={true} type={ type }>{label}: {result}</Text>;
   }
 }
 

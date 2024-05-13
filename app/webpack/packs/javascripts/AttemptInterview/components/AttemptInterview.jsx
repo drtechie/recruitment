@@ -15,9 +15,10 @@ class AttemptInterview extends React.Component {
     super(props);
     this.trackMouseEventThrottled = this.debounce(this.trackEvent, 5000);
     this.trackWindowEventThrottled = this.debounce(this.trackEvent, 5000);
-    this.trackEvent = this.trackEvent.bind(this)
-    this.trackVisibilityChange = this.trackVisibilityChange.bind(this)
-    this.trackFullscreenChange = this.trackFullscreenChange.bind(this)
+    this.trackEvent = this.trackEvent.bind(this);
+    this.submitAnswer = this.submitAnswer.bind(this);
+    this.trackVisibilityChange = this.trackVisibilityChange.bind(this);
+    this.trackFullscreenChange = this.trackFullscreenChange.bind(this);
   }
 
   state = {
@@ -31,6 +32,7 @@ class AttemptInterview extends React.Component {
     fetchingNextQuestion: false,
     submittingAnswer: false,
     skippingAnswer: false,
+    targetTimeForCurrentQuestion: null,
   };
 
   componentDidMount() {
@@ -63,9 +65,9 @@ class AttemptInterview extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('contextmenu', this.handleContextMenu);
     document.removeEventListener('click', this.trackEvent);
-    document.removeEventListener('mousemove', this.trackEventThrottled);
-    document.removeEventListener('mousedown', this.trackEventThrottled);
-    document.removeEventListener('mouseup', this.trackEventThrottled);
+    document.removeEventListener('mousemove', this.trackMouseEvent);
+    document.removeEventListener('mousedown', this.trackMouseEvent);
+    document.removeEventListener('mouseup', this.trackMouseEvent);
 
     window.removeEventListener('resize', this.trackWindowEvent);
     window.removeEventListener('scroll', this.trackWindowEvent);
@@ -200,6 +202,7 @@ class AttemptInterview extends React.Component {
         }
         if (question) {
           this.setState({ question });
+          this.resetTimer();
         }
         if (message) {
           this.setState({ attemptMessage: message });
@@ -246,11 +249,19 @@ class AttemptInterview extends React.Component {
       });
   }
 
+  resetTimer = () => {
+    const { attempt } = this.state;
+    if (attempt.time_per_question) {
+      const targetTimeForCurrentQuestion = new Date(new Date().getTime() + attempt.time_per_question * 1000);
+      this.setState({ targetTimeForCurrentQuestion })
+    }
+  }
+
   render() {
     const {
       error, errorMessage, attempt, starting, attemptMessage,
       loading, fetchingNextQuestion, question, submittingAnswer,
-      skippingAnswer,
+      skippingAnswer, targetTimeForCurrentQuestion
     } = this.state;
 
     let targetTime;
@@ -290,8 +301,27 @@ class AttemptInterview extends React.Component {
               targetTime && attempt.current_state === 'in_progress' &&
               <CountDown
                 target={ targetTime }
+                label="Time left for assessment:"
+                type='warning'
                 onEnd={ this.endAttempt }
               />
+            }
+            {
+              targetTimeForCurrentQuestion && attempt.current_state === 'in_progress' && (
+                <>
+                  &nbsp;&nbsp;|&nbsp;&nbsp;
+                  <CountDown
+                    target={ targetTimeForCurrentQuestion }
+                    label="Time left for question:"
+                    type='danger'
+                    onEnd={ () => {
+                      const answer = {};
+                      answer[question.id] = null;
+                      this.submitAnswer(answer, true)
+                    }}
+                  />
+                </>
+              )
             }
             {
               attempt.current_state === 'in_progress' && question.title

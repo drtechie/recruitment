@@ -58,6 +58,7 @@
             Skipped
           <% end %>
         <% end %>
+        <p><strong> Score: <%= calculate_score_per_question(question, answered_options) %></strong></p>
       </li>
     <% end %>
   </ol>

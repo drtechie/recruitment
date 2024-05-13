@@ -23,6 +23,9 @@ ActiveAdmin.register Attempt do
       row :categories do |attempt|
         attempt.categories.map(&:name).join(", ")
       end
+      row "Final Aggregate Score" do
+        calculate_aggregate_score(resource)
+      end
       row :created_at
       row :updated_at
       row :started_at

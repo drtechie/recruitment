@@ -107,7 +107,8 @@ module Api
           current_state: attempt.current_state,
           started_at: attempt.started_at.to_i,
           ended_at: attempt.ended_at.to_i,
-          time_allowed: attempt.interview.config&.dig("time_allowed")
+          time_allowed: attempt.interview.config&.dig("time_allowed"),
+          time_per_question: attempt.interview.config&.dig("time_per_question")
         }
       end
     end
